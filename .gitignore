@@ -34,7 +34,7 @@ classes/
 .ideaDataSources/
 dataSources/
 overlays/
-workspace.xml
+.idea/*.xml
 misc.xml
 
 ######################
