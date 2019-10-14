@@ -34,6 +34,8 @@ classes/
 .ideaDataSources/
 dataSources/
 overlays/
+workspace.xml
+misc.xml
 
 ######################
 # Maven
