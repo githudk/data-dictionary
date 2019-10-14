@@ -1,0 +1,22 @@
+{
+    "dblist2": [
+        {
+            "dbname": "oracle",
+            "dbtype": "oracle",
+            "ip": "127.0.0.1",
+            "username": "mj"
+        },
+        {
+            "dbname": "mysql",
+            "dbtype": "mysql",
+            "ip": "127.0.0.1",
+            "username": "mj"
+        },
+        {
+            "dbname": "sqlserver",
+            "dbtype": "sqlserver",
+            "ip": "127.0.0.1",
+            "username": "mj"
+        }
+    ]
+}

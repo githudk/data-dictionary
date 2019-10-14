@@ -7,7 +7,7 @@ const { SubMenu } = Menu;
 class TopNav extends Component {
 
   state = {
-    current: 'mail',
+    current: 'database',
   };
 
   handleClick = e => {
@@ -20,12 +20,12 @@ class TopNav extends Component {
   render() {
     return (
       <Menu style={{ height: 54,backgroundColor: '#fff' }} onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
-        <Menu.Item key="mail">
-          <Icon type="mail" />
+        <Menu.Item key="database">
+        <Icon type="database" />
           <span className='navtext'>表</span>
         </Menu.Item>
-        <Menu.Item key="app">
-          <Icon type="appstore" />
+        <Menu.Item key="filter">
+        <Icon type="filter" />
           <span className='navtext'>索引</span>
         </Menu.Item>
       </Menu>
