@@ -9,28 +9,28 @@ class DBForm extends Component {
         autoCompleteResult: [],
     };
 
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
-    };
+    // handleSubmit = e => {
+    //     e.preventDefault();
+    //     this.props.form.validateFieldsAndScroll((err, values) => {
+    //         if (!err) {
+    //             console.log('Received values of form: ', values);
+    //         }
+    //     });
+    // };
 
     handleConfirmBlur = e => {
         const { value } = e.target;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     };
 
-    compareToFirstPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
-        } else {
-            callback();
-        }
-    };
+    // compareToFirstPassword = (rule, value, callback) => {
+    //     const { form } = this.props;
+    //     if (value && value !== form.getFieldValue('password')) {
+    //         callback('Two passwords that you enter is inconsistent!');
+    //     } else {
+    //         callback();
+    //     }
+    // };
 
     validateToNextPassword = (rule, value, callback) => {
         const { form } = this.props;

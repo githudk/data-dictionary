@@ -4,9 +4,8 @@ import dblistjson from './dblist.json'
 import DBform from '../dbform/dbform.js'
 const { dblist2 } = dblistjson;
 const { Option } = Select;
-let index = 0;
 
-export default class dblist extends Component {
+export default class DBlist extends Component {
 
     state = {
         items: dblist2,
@@ -14,15 +13,18 @@ export default class dblist extends Component {
         visible: false,
     };
 
+    //新增
     addItem = () => {
         this.showModal();
     };
+    //弹出表单对话窗
     showModal = () => {
         this.setState({
             visible: true,
         });
     };
 
+    //保存按钮
     handleOk = () => {
         this.setState({ loading: true });
         setTimeout(() => {
@@ -30,6 +32,7 @@ export default class dblist extends Component {
         }, 3000);
     };
 
+    //取消
     handleCancel = () => {
         this.setState({ visible: false });
     };
@@ -44,9 +47,8 @@ export default class dblist extends Component {
                     dropdownRender={menu => (
                         <div>
                             {menu}
-                            <Divider style={{ margin: '4px 0' }} />
-                            <div
-                                style={{ padding: '4px 8px', cursor: 'pointer' }}
+                            <Divider style={{ margin: '0px 0' }} />
+                            <div style={{ padding: '3px 8px 4px 8px', cursor: 'pointer',  backgroundColor: '#e6faff' }}
                                 onMouseDown={e => e.preventDefault()}
                                 onClick={this.addItem}
                             >
