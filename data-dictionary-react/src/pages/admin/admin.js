@@ -1,23 +1,28 @@
 import React, { Component } from 'react'
-import { Layout, Tree, Icon } from 'antd';
+import { Layout, Tree, Icon ,Button} from 'antd';
 import './admin.less'
 import Dblist from '../../components/dblist/dblist.js'
 import Tablelist from '../../components/tablelist/tablelist.js'
 import CTable from '../../components/table/table.js'
 import TopNav from '../../components/topnav/topnav.js'
 import memoryUtils from '../../utils/memoryUtils.js'
+import storageUtils from '../../utils/storageUtils.js'
 import {Redirect} from 'react-router-dom'
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const { TreeNode } = Tree;
-
 export default class Admin extends Component {
 
+    logout = () => {
+        storageUtils.logout();
+        memoryUtils.loginStatus=0;
+        this.props.history.replace("/");
+    }
 
     render() {
-        const user = memoryUtils.user;
-        if(!user || !user.id){
+        //内存中获取登陆状态，1：表示已经登陆，0：表示未登陆
+        const loginStatus = memoryUtils.loginStatus;
+        if( loginStatus === 0 ){
             return <Redirect to="/login"></Redirect>
         }
         return (
@@ -26,6 +31,9 @@ export default class Admin extends Component {
                     <Header style={{ backgroundColor: '#aae7ff' }}>
                         <div className='dblist'>
                             <Dblist></Dblist>
+                        </div>
+                        <div className='logoutbt'>
+                        <Button onClick={this.logout}>退出</Button>
                         </div>
                     </Header>
                     <Layout>

@@ -5,7 +5,7 @@ import App from './App';
 import memoryUtils from './utils/memoryUtils.js'
 import storageUtils from './utils/storageUtils.js'
 
-const user = storageUtils.getUser();
-memoryUtils.user = user;
+const loginStatus = storageUtils.getLoginStatus();
+memoryUtils.loginStatus = loginStatus ? loginStatus : 0;
 
 ReactDOM.render(<App />, document.getElementById('root'));

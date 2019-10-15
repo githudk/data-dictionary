@@ -6,15 +6,15 @@
 export default{
 
 
-    saveUser(user){
-        localStorage.setItem("admin_user",JSON.stringify(user));
+    loginSuccess(){
+        localStorage.setItem("login_status",1);
     },
 
-    getUser(){
-        return JSON.parse(localStorage.getItem("admin_user") || '{}') ;
+    getLoginStatus(){
+        return localStorage.getItem("login_status") ? localStorage.getItem("login_status") : 0 ;
     },
 
-    removeUser(){
-        localStorage.removeItem("admin_user");
+    logout(){
+        localStorage.removeItem("login_status");
     }
 }
