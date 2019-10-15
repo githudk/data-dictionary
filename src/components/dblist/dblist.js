@@ -28,7 +28,7 @@ export default class DBlist extends Component {
     handleOk = () => {
         this.setState({ loading: true });
         setTimeout(() => {
-            this.setState({ loading: false, visible: false });
+            this.setState({ loading: false });
         }, 3000);
     };
 
@@ -64,18 +64,10 @@ export default class DBlist extends Component {
                 <Modal
                     visible={visible}
                     title="连接数据库"
-                    onOk={this.handleOk}
+                    footer={[]}
                     onCancel={this.handleCancel}
-                    footer={[
-                        <Button key="back" onClick={this.handleCancel}>
-                            取消
-                        </Button>,
-                        <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-                            保存
-                        </Button>,
-                    ]}
                 >
-                    <DBform></DBform>
+                    <DBform dblist={items}></DBform>
                 </Modal>
             </div>
         )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Form,Input,Select} from 'antd';
+import { Form, Input, Select,Button } from 'antd';
 const { Option } = Select;
 
 
@@ -8,15 +8,14 @@ class DBForm extends Component {
         confirmDirty: false,
         autoCompleteResult: [],
     };
-
-    // handleSubmit = e => {
-    //     e.preventDefault();
-    //     this.props.form.validateFieldsAndScroll((err, values) => {
-    //         if (!err) {
-    //             console.log('Received values of form: ', values);
-    //         }
-    //     });
-    // };
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    };
 
     handleConfirmBlur = e => {
         const { value } = e.target;
@@ -70,6 +69,18 @@ class DBForm extends Component {
             },
         };
 
+        const tailFormItemLayout = {
+            wrapperCol: {
+              xs: {
+                span: 4,
+                offset: 18,
+              },
+              sm: {
+                span: 4,
+                offset: 18,
+              },
+            },
+          };
         return (
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
 
@@ -119,6 +130,11 @@ class DBForm extends Component {
                             <Option value="SQL Server">QL Server</Option>
                         </Select>,
                     )}
+                </Form.Item>
+                <Form.Item {...tailFormItemLayout}>
+                    <Button type="primary" htmlType="submit">
+                        保存
+                    </Button>
                 </Form.Item>
             </Form>
         );

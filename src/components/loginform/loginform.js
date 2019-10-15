@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message} from 'antd';
+import { reqLogin } from '../../service/api/api.js' 
+import memoryUtils from '../../utils/memoryUtils.js'
+import storageUtils from '../../utils/storageUtils.js'
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -12,10 +15,35 @@ class LoginForm extends Component {
   }
 
   handleSubmit = e => {
+    const history = this.props.history;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      const {username, password} = values;
+      //验证成功
       if (!err) {
-        console.log('Received values of form: ', values);
+        //const response = await reqLogin(username, password);
+        //const result = response.data;
+        var result = {
+          status : 0,
+          msg: "用户名或密码错误"
+        };
+        if(username==="admin" && password === "123456"){
+          result = {
+            status : 1  
+          }
+        }
+        if(result.status === 1){
+          message.success("登陆成功");
+          memoryUtils.user = {
+            id : "admin"
+          };
+          storageUtils.saveUser({
+            id : "admin"
+          });
+          history.replace("/");
+        }else if(result.status === 0){
+          message.error(result.msg);
+        }
       }
     });
   };

@@ -5,6 +5,8 @@ import Dblist from '../../components/dblist/dblist.js'
 import Tablelist from '../../components/tablelist/tablelist.js'
 import CTable from '../../components/table/table.js'
 import TopNav from '../../components/topnav/topnav.js'
+import memoryUtils from '../../utils/memoryUtils.js'
+import {Redirect} from 'react-router-dom'
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -14,6 +16,10 @@ export default class Admin extends Component {
 
 
     render() {
+        const user = memoryUtils.user;
+        if(!user || !user.id){
+            return <Redirect to="/login"></Redirect>
+        }
         return (
             <div className='admin'>
                 <Layout style={{ height: "100%" }}>

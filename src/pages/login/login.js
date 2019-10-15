@@ -15,7 +15,7 @@ export default class Login extends Component {
                 </div>
 
                 <div className='loginform'>
-                    <LoginForm ></LoginForm>
+                    <LoginForm history = {this.props.history}></LoginForm>
                 </div>
 
             </div>
