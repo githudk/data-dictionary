@@ -13,12 +13,6 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -81,7 +75,6 @@ misc.xml
 # Eclipse
 ######################
 *.pydevproject
-.project
 .metadata
 tmp/
 tmp/**/*
@@ -90,10 +83,8 @@ tmp/**/*
 *.swp
 *~.nib
 local.properties
-.classpath
 .settings/
 .loadpath
-.factorypath
 /src/main/resources/rebel.xml
 
 occ-portal-static/src/wbalone/META-INF/maven/
