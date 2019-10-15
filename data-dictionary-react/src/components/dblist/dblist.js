@@ -67,7 +67,7 @@ export default class DBlist extends Component {
                     footer={[]}
                     onCancel={this.handleCancel}
                 >
-                    <DBform dblist={items}></DBform>
+                    <DBform handleOk={this.handleOk} dblist={items}></DBform>
                 </Modal>
             </div>
         )

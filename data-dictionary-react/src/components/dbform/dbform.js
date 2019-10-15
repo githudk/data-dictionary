@@ -31,29 +31,29 @@ class DBForm extends Component {
     //     }
     // };
 
-    validateToNextPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && this.state.confirmDirty) {
-            form.validateFields(['confirm'], { force: true });
-        }
-        callback();
-    };
+    // validateToNextPassword = (rule, value, callback) => {
+    //     const { form } = this.props;
+    //     if (value && this.state.confirmDirty) {
+    //         form.validateFields(['confirm'], { force: true });
+    //     }
+    //     callback();
+    // };
 
-    handleWebsiteChange = value => {
-        let autoCompleteResult;
-        if (!value) {
-            autoCompleteResult = [];
-        } else {
-            autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-        }
-        this.setState({ autoCompleteResult });
-    };
-    handleSelectChange = value => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    };
+    // handleWebsiteChange = value => {
+    //     let autoCompleteResult;
+    //     if (!value) {
+    //         autoCompleteResult = [];
+    //     } else {
+    //         autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
+    //     }
+    //     this.setState({ autoCompleteResult });
+    // };
+    // handleSelectChange = value => {
+    //     console.log(value);
+    //     this.props.form.setFieldsValue({
+    //         note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+    //     });
+    // };
     render() {
         const { getFieldDecorator } = this.props.form;
         const { autoCompleteResult } = this.state;
