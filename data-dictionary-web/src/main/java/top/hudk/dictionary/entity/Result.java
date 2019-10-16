@@ -9,9 +9,9 @@ import lombok.Data;
  * @date 2019/10/15 18:01
  */
 @Data
-public class LoginResult {
+public class Result {
 
-    public LoginResult(int status,String msg){
+    public Result(int status,String msg){
         this.status = status;
         this.msg = msg;
     }
