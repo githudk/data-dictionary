@@ -16,5 +16,15 @@ export default{
 
     logout(){
         localStorage.removeItem("login_status");
-    }
+    },
+
+    setCurrentDB(value){
+        localStorage.setItem("currentDB",value);
+    },
+
+    getCurrentDB(){
+        return localStorage.getItem("currentDB") ? localStorage.getItem("currentDB") : "-1" ;
+    },
+
+
 }

@@ -9,7 +9,7 @@ import lombok.Data;
  * @date 2019/10/15 18:01
  */
 @Data
-public class Result {
+public class Result<T> {
 
     public Result(int status,String msg){
         this.status = status;
@@ -24,6 +24,8 @@ public class Result {
      * 登陆返回的消息
      */
     private String msg;
+
+    private T data;
 
 
 }

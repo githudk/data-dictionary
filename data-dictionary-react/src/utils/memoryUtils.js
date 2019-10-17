@@ -3,5 +3,6 @@
  */
 
  export default {
-    loginStatus: 0
+    loginStatus: 0,
+    currentDB : ""
  }

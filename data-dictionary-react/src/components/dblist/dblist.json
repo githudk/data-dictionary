@@ -1,22 +1,28 @@
 {
-    "dblist2": [
+    "data": [
         {
-            "dbname": "oracle",
+            "dbadrr": "10.10.4.16",
+            "dbname": "orcl",
+            "dbport": "1521",
             "dbtype": "oracle",
-            "ip": "127.0.0.1",
-            "username": "mj"
+            "password": "123456",
+            "username": "GREE"
         },
         {
-            "dbname": "mysql",
+            "dbadrr": "39.106.229.84",
+            "dbname": "solo2",
+            "dbport": "3306",
             "dbtype": "mysql",
-            "ip": "127.0.0.1",
-            "username": "mj"
+            "password": "111111",
+            "username": "hudk"
         },
         {
-            "dbname": "sqlserver",
+            "dbadrr": "127.0.0.1",
+            "dbname": "qqq",
+            "dbport": "1433",
             "dbtype": "sqlserver",
-            "ip": "127.0.0.1",
-            "username": "mj"
+            "password": "gh",
+            "username": "qqq"
         }
     ]
 }

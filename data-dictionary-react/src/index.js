@@ -6,6 +6,9 @@ import memoryUtils from './utils/memoryUtils.js'
 import storageUtils from './utils/storageUtils.js'
 
 const loginStatus = storageUtils.getLoginStatus();
-memoryUtils.loginStatus = loginStatus ? loginStatus : 0;
+memoryUtils.loginStatus = loginStatus;
+
+const currentDB = storageUtils.getCurrentDB();
+memoryUtils.currentDB = currentDB;
 
 ReactDOM.render(<App />, document.getElementById('root'));

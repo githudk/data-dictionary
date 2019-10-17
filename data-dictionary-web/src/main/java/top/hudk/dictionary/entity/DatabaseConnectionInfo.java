@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class DatabaseConnectionInfo {
 
+    private String id;
+
     private String username;
 
     private String password;

@@ -10,4 +10,10 @@ module.exports = function(app) {
       changeOrigin: true
     })
   );
+  app.use(
+    proxy("/admin/login", {
+      target: "http://127.0.0.1:8888/",
+      changeOrigin: true
+    })
+  );
 };
