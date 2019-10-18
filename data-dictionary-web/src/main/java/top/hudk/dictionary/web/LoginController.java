@@ -1,9 +1,13 @@
 package top.hudk.dictionary.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.entity.Result;
+import top.hudk.dictionary.entity.User;
+import top.hudk.dictionary.service.DBService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +21,16 @@ import java.util.List;
 @RequestMapping("/admin")
 public class LoginController {
 
+    @Autowired
+    DBService dBService;
+
+    @Autowired
+    private User user;
+
     @GetMapping("/login")
     public Result login(@RequestParam(value = "username", required = true) String username,
                         @RequestParam(value = "password", required = true) String password) {
-        String name = "admin";
-        String psw = "123456";
-        if (name.equals(username) && psw.equals(password)) {
+        if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
             return new Result(1, "登陆成功");
         }
         return new Result(0, "用户名或密码错误");
@@ -31,9 +39,13 @@ public class LoginController {
 
     @PostMapping("/adddb")
     public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) {
-        System.out.println(databaseConnectionInfo.toString());
-        Result result = new Result(1, "保存成功");
-        databaseConnectionInfo.setId("4");
+        Result result = null;
+        try {
+            dBService.save(databaseConnectionInfo);
+            result = new Result(1, "保存成功");
+        } catch (IOException e) {
+            result = new Result(0, "保存失败："+e.getMessage());
+        }
         result.setData(databaseConnectionInfo);
         return result;
     }
@@ -67,40 +79,8 @@ public class LoginController {
      * @return
      */
     @PostMapping("/getalldblist")
-    public List<DatabaseConnectionInfo> getAllDBList() {
-        List<DatabaseConnectionInfo> dblist = new ArrayList<DatabaseConnectionInfo>();
-
-        DatabaseConnectionInfo atabaseConnectionInfo = new DatabaseConnectionInfo();
-        atabaseConnectionInfo.setId("1");
-        atabaseConnectionInfo.setDbadrr("10.10.4.16");
-        atabaseConnectionInfo.setDbname("orcl");
-        atabaseConnectionInfo.setDbport("1521");
-        atabaseConnectionInfo.setDbtype("oracle");
-        atabaseConnectionInfo.setPassword("123456");
-        atabaseConnectionInfo.setUsername("GREE");
-        dblist.add(atabaseConnectionInfo);
-
-        DatabaseConnectionInfo atabaseConnectionInfo2 = new DatabaseConnectionInfo();
-        atabaseConnectionInfo2.setId("2");
-        atabaseConnectionInfo2.setDbadrr("39.106.229.84");
-        atabaseConnectionInfo2.setDbname("solo2");
-        atabaseConnectionInfo2.setDbport("3306");
-        atabaseConnectionInfo2.setDbtype("mysql");
-        atabaseConnectionInfo2.setPassword("111111");
-        atabaseConnectionInfo2.setUsername("hudk");
-        dblist.add(atabaseConnectionInfo2);
-
-        DatabaseConnectionInfo atabaseConnectionInfo3 = new DatabaseConnectionInfo();
-        atabaseConnectionInfo3.setId("3");
-        atabaseConnectionInfo3.setDbadrr("127.0.0.1");
-        atabaseConnectionInfo3.setDbname("orcl");
-        atabaseConnectionInfo3.setDbport("1433");
-        atabaseConnectionInfo3.setDbtype("sqlserver");
-        atabaseConnectionInfo3.setPassword("123456");
-        atabaseConnectionInfo3.setUsername("GREE");
-        dblist.add(atabaseConnectionInfo3);
-
-        return dblist;
+    public List<DatabaseConnectionInfo> getAllDBList() throws IOException {
+        return dBService.getAll();
     }
 
 

@@ -1,6 +1,7 @@
 package top.hudk.dictionary.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * 作用:
@@ -24,5 +25,19 @@ public class DatabaseConnectionInfo {
     private String dbname;
 
     private String dbtype;
+
+    @Override
+    public String toString(){
+        String str = "{data:{" +
+                "\"id\":" +id+","+
+                "\"username\":\"" +username+"\","+
+                "\"password\":\"" +password+"\","+
+                "\"dbadrr\":\"" +dbadrr+"\","+
+                "\"dbport\":\"" +dbport+"\","+
+                "\"dbname\":\"" +dbname+"\","+
+                "\"dbtype\":\"" +dbtype+"\","+
+                "}}";
+        return str;
+    }
 
 }

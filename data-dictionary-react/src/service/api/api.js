@@ -5,3 +5,5 @@ export const reqLogin = (username,password) => ajax('/admin/login',{username,pas
 export const reqAddDB = (data) => ajax('/admin/adddb',data,'post');
 
 export const reqGetAllDBList = () => ajax('/admin/getalldblist',{},'post');
+
+export const reqGetAllTable = (id) => ajax('/admin/getalltable',{id},'post');

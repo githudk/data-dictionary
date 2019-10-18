@@ -25,9 +25,15 @@ class DBlist extends Component {
         console.log(items);
         var currentDB = memoryUtils.currentDB;
         console.log(currentDB);
-        if(currentDB === "-1"){
-            currentDB = items[0].id;
-            storageUtils.setCurrentDB(items[0].id);
+        if(items.length > 0 ){
+            if(currentDB === "-1"){
+                currentDB = items[0].id;
+                storageUtils.setCurrentDB(items[0].id);
+            }
+        }else{
+            storageUtils.setCurrentDB("-1");
+            memoryUtils.currentDB = "-1";
+            currentDB = "选择或添加数据库"
         }
         console.log(currentDB);
         this.setState({
