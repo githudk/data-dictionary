@@ -1,11 +1,56 @@
 import React, { Component } from 'react'
-import { List, message, Avatar, Spin, Button } from 'antd';
+import { List, message, Avatar, Spin, Button, Input, Tooltip, BackTop } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import { reqGetAllTable } from '../../service/api/api.js'
 import './tablelist.less'
+const { Search } = Input;
 export default class Tablelist extends Component {
     state = {
-        data: [{id:"b2b_goods",tablecode:"b2b_goods",tablename:"商品表"},{id:"b2b_goods",tablecode:"b2b_goods",tablename:"商品表"}],
+        data: [
+            
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+            { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
+
+        ],
         loading: false,
         hasMore: true,
     };
@@ -20,6 +65,7 @@ export default class Tablelist extends Component {
 
     fetchData = async callback => {
         const data = await reqGetAllTable();
+        //
     };
 
     handleInfiniteOnLoad = () => {
@@ -43,14 +89,23 @@ export default class Tablelist extends Component {
             });
         });
     };
-    detail(){
+    detail() {
         console.log("ddd");
     }
     render() {
 
         return (
             <div className="listcontainer">
+                <div className="search">
+                    <Search
+                        placeholder="input search text"
+                        onSearch={value => console.log(value)}
+                        style={{ width: "100%"}}
+                    />
+                </div>
+
                 <InfiniteScroll
+                    className="scroll"
                     initialLoad={false}
                     pageStart={0}
                     loadMore={this.handleInfiniteOnLoad}
@@ -58,28 +113,31 @@ export default class Tablelist extends Component {
                     useWindow={false}
                 >
                     <List
-                        split={true}
-                        
+                        split={false}
                         dataSource={this.state.data}
                         renderItem={item => (
                             <List.Item
-                                onClick = {this.detail}
+                                style={{ height: 30 }}
+                                onClick={this.detail}
                                 key={item.id}
                             >
-                                <List.Item.Meta
-                                    style={{cursor:"pointer"}}
-                                    title={item.tablecode}
-                                    description={item.tablename}
-                                />
+                                <Tooltip placement="rightTop" title="prompt text">
+                                    <List.Item.Meta
+                                        style={{ height: 20, cursor: "pointer" }}
+                                        title={item.tablecode}
+                                    />
+                                </Tooltip>
+
                             </List.Item>
                         )}
                     >
                         {this.state.loading && this.state.hasMore && (
-                            <div className="demo-loading-container">
+                            <div className="loading-container">
                                 <Spin />
                             </div>
                         )}
                     </List>
+                    {/* <BackTop target={}></BackTop> */}
                 </InfiniteScroll>
             </div>
         )

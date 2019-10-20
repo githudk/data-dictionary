@@ -2,8 +2,26 @@
     height: 100%;
     width: 100%;
     min-height: 500px;
-    .dblist{
+    .logo{
+        height: 100%;
+        width: 200px;
+        display: flex;
         float: left;
+        .img{
+            display: inline-block;
+            height: 50px;
+            width: 50px;
+            margin: 10px 20px;
+        }
+        .h1{
+            display: inline-block;
+            font-size: 20px;
+        }
+    }
+    .dblist{
+        align-content: center;
+        float: left;
+        margin: 0px 15px;
         height: 100%;
         width: 250px;
     }
@@ -16,7 +34,37 @@
     .table_list{
         height: 100%;
         width: 100%;
-        background-color: rgb(233, 233, 233);
+    }
+    .tableinfo{
+        height: 50px;
+        width: 100%;
+        line-height:50px;
+        .tablename{
+            padding: 0px 15px;
+            height: 100%;
+            width: 50%;
+            float: left;
+            text-align: left;
+            .tablenameh5{
+                font-size: 20px;
+                color: #000;
+            }
+        }
+        .tabledescription{
+            padding: 0px 15px;
+            height: 100%;
+            width: 45%;
+            float: left;
+            text-align: right;
+            .tabledescriptionh5{
+                font-size: 13px;
+                color: #aaa;
+            }
+        }
+    }
+    .tablecontainer{
+        height: 90%;
+        width: 100%;
     }
     .footer{
         height: 100%;

@@ -1,12 +1,27 @@
 .listcontainer{
-    margin: 0px 10px;
-    width: 80%;
+    border-radius: 4px;
+    width: 100%;
     height: 100%;
-    .listitem{
-        height: 40px;
-       .listitemmeta{
-            cursor:pointer;
-            background-color: #c7f8fa;
-       }
+    .scroll{
+        height: 90%;
+        overflow: auto;
+        padding: 0px 0px 0px 10px;
+        background-color: azure;
+        border-top: 3px solid #f1f1f1;
+        border-bottom: 3px solid #f1f1f1;
     }
+    .search{
+        width: 100%;
+        height: 50px;
+        align-items: center;
+        display: flex;
+        padding: 0px 10px 0px 10px;
+        background-color:#aae7ff;
+    }
+    .loading-container {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+        text-align: center;
+      }
 }

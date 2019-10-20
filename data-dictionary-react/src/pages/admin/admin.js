@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout, Tree, Icon, Button } from 'antd';
+import { Layout, Tree, Icon, Button, Descriptions } from 'antd';
 import './admin.less'
 import Dblist from '../../components/dblist/dblist.js'
 import Tablelist from '../../components/tablelist/tablelist.js'
@@ -8,6 +8,7 @@ import TopNav from '../../components/topnav/topnav.js'
 import memoryUtils from '../../utils/memoryUtils.js'
 import storageUtils from '../../utils/storageUtils.js'
 import { Redirect } from 'react-router-dom'
+import logo from '../../components/img/logo.png'
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -28,21 +29,36 @@ export default class Admin extends Component {
         return (
             <div className='admin'>
                 <Layout style={{ height: "100%" }}>
-                    <Header style={{ backgroundColor: '#aae7ff' }}>
-                        <div className='dblist'>
-                            <Dblist></Dblist>
+                    <Header style={{ backgroundColor: '#aae7ff', padding: "0px" }}>
+                        <div className='logo'>
+                            <img className='img' src={logo} alt='logo' />
+                            <h1 className='h1'>数据字典</h1>
                         </div>
                         <div className='logoutbt'>
                             <Button onClick={this.logout}>退出</Button>
                         </div>
+                        <div className='dblist'>
+                            <Dblist></Dblist>
+                        </div>
+
                     </Header>
                     <Layout>
-                        <Sider style={{ backgroundColor: '#eee' }}>
-                            <TopNav></TopNav>
+                        <Sider style={{ backgroundColor: '#fff' }}>
+                            {/*<TopNav></TopNav>*/}
                             <Tablelist></Tablelist>
                         </Sider>
                         <Content style={{ backgroundColor: '#fff' }}>
-                            <CTable></CTable>
+                            <div className="tableinfo">
+                                <div className="tablename">
+                                    <h5 className="tablenameh5">{"b2b_goods"}</h5>
+                                </div>
+                                <div className="tabledescription">
+                                    <h5 className="tabledescriptionh5">{"b2b_goods"}</h5>
+                                </div>
+                            </div>
+                            <div className="tablecontainer">
+                                <CTable></CTable>
+                            </div>
                         </Content>
                     </Layout>
                     {/* <Footer style={{ backgroundColor: '#aaa' }}>

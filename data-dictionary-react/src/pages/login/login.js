@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LoginForm from '../../components/loginform/loginform.js'
 import './login.less'
-import logo from './logo.png'
+import logo from '../../components/img/logo.png'
 
 export default class Login extends Component {
 

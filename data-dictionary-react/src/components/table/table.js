@@ -5,34 +5,150 @@ import Highlighter from 'react-highlight-words';
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
   },
   {
-    key: '2',
-    name: 'Joe Black',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
   },
   {
-    key: '3',
-    name: 'Jim Green',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
   },
   {
-    key: '4',
-    name: 'Jim Red',
-    age: 32,
-    address: 'London No. 2 Lake Park',
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
+  },
+  {
+    key: '1',
+    columnname: 'goodname',
+    columncomment: "描述",
+    datatype: 'char',
+    datalen:20
   },
 ];
 
 class CTable extends Component {
   state = {
     searchText: '',
-  };
+  }
 
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -54,10 +170,10 @@ class CTable extends Component {
           size="small"
           style={{ width: 90, marginRight: 8 }}
         >
-          Search
+          搜索
         </Button>
         <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-          Reset
+          重置
         </Button>
       </div>
     ),
@@ -83,7 +199,6 @@ class CTable extends Component {
       />
     ),
   });
-
   handleSearch = (selectedKeys, confirm) => {
     confirm();
     this.setState({ searchText: selectedKeys[0] });
@@ -97,27 +212,39 @@ class CTable extends Component {
   render() {
     const columns = [
       {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        width: '30%',
-        ...this.getColumnSearchProps('name'),
-      },
-      {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
+        title: '字段名',
+        dataIndex: 'columnname',
+        key: 'columnname',
         width: '20%',
-        ...this.getColumnSearchProps('age'),
+        align: "center",
+        sorter: (a, b) => a.columnname.length - b.columnname.length,
+        ...this.getColumnSearchProps('columnname'),
       },
       {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-        ...this.getColumnSearchProps('address'),
+        title: '字段描述',
+        dataIndex: 'columncomment',
+        key: 'columncomment',
+        width: '20%',
+        ...this.getColumnSearchProps('columncomment'),
+      },
+      {
+        title: '存储类型',
+        dataIndex: 'datatype',
+        key: 'datatype',
+        width: '20%',
+        align: "center",
+        ...this.getColumnSearchProps('datatype'),
+      },
+      {
+        title: '存储长度',
+        dataIndex: 'datalen',
+        key: 'datalen',
+        width: '20%',
+        align: "center",
+        ...this.getColumnSearchProps('datalen'),
       },
     ];
-    return <Table columns={columns} dataSource={data} />;
+    return <Table style={{height:"90%"}} bordered pagination={{ pageSize: 500 }} scroll={{ y: 600 }} scrollToFirstRowOnChange={true} columns={columns} dataSource={data} />;
   }
 }
 
