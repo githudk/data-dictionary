@@ -186,5 +186,285 @@ export const getcolumnsdata = () =>{
             datatype: 'char',
             datalen: 20
         },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
+        {
+            key: '1',
+            columnname: 'goodname',
+            columncomment: "描述",
+            datatype: 'char',
+            datalen: 20
+        },
     ];
 }
