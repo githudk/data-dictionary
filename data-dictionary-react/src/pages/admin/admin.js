@@ -235,7 +235,7 @@ export default class Admin extends Component {
                                             onClick={this.detail}
                                             key={item.id}
                                         >
-                                            <Tooltip placement="rightTop" title="prompt text">
+                                            <Tooltip placement="rightTop" title="商品表">
                                                 <List.Item.Meta
                                                     style={{ height: 20, cursor: "pointer" }}
                                                     title={item.tablecode}
