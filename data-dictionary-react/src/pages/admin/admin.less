@@ -1,7 +1,25 @@
 .admin{
     height: 100%;
     width: 100%;
-    min-height: 500px;
+    .header{
+        height: 60px;
+        width: 100%;
+        background-color: #aae7ff;
+    }
+    .header_b{
+        height: 50px;
+        width: 100%;
+        background-color: #f4f4f4;
+        .search{
+            align-items: center;
+            display: flex;
+            float: left;
+            height: 50px;
+            width: 200px;
+            padding: 0px 10px 10px 10px;
+            background-color: #aae7ff;
+        }
+    }
     .logo{
         height: 100%;
         width: 200px;
@@ -9,9 +27,9 @@
         float: left;
         .img{
             display: inline-block;
-            height: 50px;
-            width: 50px;
-            margin: 10px 20px;
+            height: 60px;
+            width: 60px;
+            margin: 0px 15px;
         }
         .h1{
             display: inline-block;
@@ -23,7 +41,31 @@
         float: left;
         margin: 0px 15px;
         height: 100%;
-        width: 250px;
+        width: 300px;
+    }
+    .tablelistscroll{
+        height: calc(100vh - 120px);
+        overflow: auto;
+        padding: 0px 0px 0px 10px;
+        background-color: #fff;
+        .loading-container{
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+        }
+    }
+    .tableinfo{
+        padding: 15px 0px 0px 0px;
+        margin: 0px 50px;
+        height: 100%;
+        float: left;
+        text-align: center;
+        line-height:20px;
+        .tableinfotext{
+            font-size: 20px;
+            color: #000;
+        }
     }
     .logoutbt{
         align-content: center;
@@ -31,39 +73,8 @@
         height: 100%;
         width: 70px;
     }
-    .table_list{
+    .table{
         height: 100%;
-        width: 100%;
-    }
-    .tableinfo{
-        height: 50px;
-        width: 100%;
-        line-height:50px;
-        .tablename{
-            padding: 0px 15px;
-            height: 100%;
-            width: 50%;
-            float: left;
-            text-align: left;
-            .tablenameh5{
-                font-size: 20px;
-                color: #000;
-            }
-        }
-        .tabledescription{
-            padding: 0px 15px;
-            height: 100%;
-            width: 45%;
-            float: left;
-            text-align: right;
-            .tabledescriptionh5{
-                font-size: 13px;
-                color: #aaa;
-            }
-        }
-    }
-    .tablecontainer{
-        height: 90%;
         width: 100%;
     }
     .footer{

@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import { List, message, Avatar, Spin, Button, Input, Tooltip, BackTop } from 'antd';
+import { List, message, Avatar, Spin, Button, Input, Tooltip, BackTop, Layout } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import { reqGetAllTable } from '../../service/api/api.js'
 import './tablelist.less'
 const { Search } = Input;
+const { Header, Footer, Sider, Content } = Layout;
 export default class Tablelist extends Component {
     state = {
         data: [
-            
+
             { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
             { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
             { id: "b2b_goods", tablecode: "b2b_goods", tablename: "商品表" },
@@ -95,15 +96,7 @@ export default class Tablelist extends Component {
     render() {
 
         return (
-            <div className="listcontainer">
-                <div className="search">
-                    <Search
-                        placeholder="input search text"
-                        onSearch={value => console.log(value)}
-                        style={{ width: "100%"}}
-                    />
-                </div>
-
+    
                 <InfiniteScroll
                     className="scroll"
                     initialLoad={false}
@@ -139,7 +132,6 @@ export default class Tablelist extends Component {
                     </List>
                     {/* <BackTop target={}></BackTop> */}
                 </InfiniteScroll>
-            </div>
         )
     }
 }

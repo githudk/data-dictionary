@@ -244,7 +244,7 @@ class CTable extends Component {
         ...this.getColumnSearchProps('datalen'),
       },
     ];
-    return <Table style={{height:"90%"}} bordered pagination={{ pageSize: 500 }} scroll={{ y: 600 }} scrollToFirstRowOnChange={true} columns={columns} dataSource={data} />;
+    return <Table className="table" size="small"  bordered pagination={false} scroll={{y:true}} columns={columns} dataSource={data} />;
   }
 }
 
