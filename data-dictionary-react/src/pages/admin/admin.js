@@ -7,7 +7,7 @@ import storageUtils from '../../utils/storageUtils.js';
 import { Redirect } from 'react-router-dom';
 import logo from '../../components/img/logo.png';
 import Highlighter from 'react-highlight-words';
-import {getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
+import { getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
 import InfiniteScroll from 'react-infinite-scroller';
 import { reqGetAllTable } from '../../service/api/api.js';
 const { Search } = Input;
@@ -24,15 +24,13 @@ export default class Admin extends Component {
         columnshasMore: false,
     }
 
-    
+
     componentDidMount() {
         const columnsdata = getcolumnsdata();
         const tablesdata = gettablesdata();
-        this.fetchData(res => {
-            this.setState({
-                columnsdata: columnsdata,
-                tablesdata: tablesdata
-            });
+        this.setState({
+            columnsdata: columnsdata,
+            tablesdata: tablesdata
         });
     }
 

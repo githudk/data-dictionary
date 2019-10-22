@@ -25,12 +25,12 @@ class DBlist extends Component {
         console.log(items);
         var currentDB = memoryUtils.currentDB;
         console.log(currentDB);
-        if(items.length > 0 ){
-            if(currentDB === "-1"){
+        if (items.length > 0) {
+            if (currentDB === "-1") {
                 currentDB = items[0].id;
                 storageUtils.setCurrentDB(items[0].id);
             }
-        }else{
+        } else {
             storageUtils.setCurrentDB("-1");
             memoryUtils.currentDB = "-1";
             currentDB = "选择或添加数据库"
@@ -85,7 +85,7 @@ class DBlist extends Component {
                         items: [...this.state.items, result.data],
                         loading: false,
                         visible: false,
-                        currentDB : result.data.id
+                        currentDB: result.data.id
                     });
 
                 } else {
@@ -105,7 +105,7 @@ class DBlist extends Component {
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     };
     //数据源变更触发的事件
-    handleSelectChange = value =>{
+    handleSelectChange = value => {
         //console.log(value);
         storageUtils.setCurrentDB(value);
         memoryUtils.currentDB = value;
@@ -114,16 +114,16 @@ class DBlist extends Component {
         });
     };
 
-    handleDBTypeSelectChange = value =>{
+    handleDBTypeSelectChange = value => {
         var form = this.props.form;
-        if(value === "oracle"){
-            form.setFieldsValue({dbport:"1521"});
+        if (value === "oracle") {
+            form.setFieldsValue({ dbport: "1521" });
         }
-        if(value === "mysql"){
-            form.setFieldsValue({dbport:"3066"});
+        if (value === "mysql") {
+            form.setFieldsValue({ dbport: "3066" });
         }
-        if(value === "sqlserver"){
-            form.setFieldsValue({dbport:"1433"});
+        if (value === "sqlserver") {
+            form.setFieldsValue({ dbport: "1433" });
         }
     }
 
@@ -200,7 +200,7 @@ class DBlist extends Component {
                 >
 
                     <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                    <Form.Item label="数据库类型">
+                        <Form.Item label="数据库类型">
                             {getFieldDecorator('dbtype', {
                                 rules: [{ required: true, message: '请选择数据库类型!' }],
                             })(
@@ -247,7 +247,7 @@ class DBlist extends Component {
                             })(<Input />)}
                         </Form.Item>
 
-                        
+
                     </Form>
                 </Modal>
             </div>
