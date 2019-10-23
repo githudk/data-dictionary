@@ -144,7 +144,7 @@ export default class Admin extends Component {
                 title: '字段名',
                 dataIndex: 'columnname',
                 key: 'columnname',
-                width: '20%',
+                width: '100px',
                 align: "center",
                 sorter: (a, b) => a.columnname.length - b.columnname.length,
                 ...this.getColumnSearchProps('columnname'),
@@ -153,7 +153,7 @@ export default class Admin extends Component {
                 title: '字段描述',
                 dataIndex: 'columncomment',
                 key: 'columncomment',
-                width: '20%',
+                width: '100px',
                 align: "center",
                 ...this.getColumnSearchProps('columncomment'),
             },
@@ -161,17 +161,15 @@ export default class Admin extends Component {
                 title: '存储类型',
                 dataIndex: 'datatype',
                 key: 'datatype',
-                width: '20%',
+                width: '100px',
                 align: "center",
-                ...this.getColumnSearchProps('datatype'),
             },
             {
                 title: '存储长度',
                 dataIndex: 'datalen',
                 key: 'datalen',
-                width: '20%',
+                width: '100px',
                 align: "center",
-                ...this.getColumnSearchProps('datalen'),
             },
         ];
         //内存中获取登陆状态，1：表示已经登陆，0：表示未登陆
@@ -219,7 +217,7 @@ export default class Admin extends Component {
                         {/* 左侧侧边列表-开始 */}
                         <Sider style={{ backgroundColor: '#f4f4f4' }}>
                             <InfiniteScroll
-                                className="tablelistscroll"
+                                className="tablelistscroll tablelist_scroll"
                                 initialLoad={false}
                                 pageStart={0}
                                 loadMore={this.handleInfiniteOnLoad}
@@ -227,17 +225,18 @@ export default class Admin extends Component {
                                 useWindow={false}
                             >
                                 <List
+                                    size="small"
                                     split={false}
                                     dataSource={this.state.tablesdata}
                                     renderItem={item => (
                                         <List.Item
-                                            style={{ height: 30 }}
+                                            className = "listitem"
                                             onClick={this.detail}
                                             key={item.id}
                                         >
                                             <Tooltip placement="rightTop" title="商品表">
                                                 <List.Item.Meta
-                                                    style={{ height: 20, cursor: "pointer" }}
+                                                    className = "listitemmeta"
                                                     title={item.tablecode}
                                                 />
                                             </Tooltip>
@@ -259,11 +258,12 @@ export default class Admin extends Component {
                         {/* 表格开始 */}
                         <Content style={{ backgroundColor: "#f4f4f4", padding: "0px 15px" }}>
                             <Table
+                                className="table"
                                 loading={this.state.columnsloading}
                                 useFixedHeader={true}
                                 size="small"
                                 bordered
-                                scroll={{ y: "calc(100vh - 160px)" }}
+                                scroll={{ y: "calc(100vh - 170px)" }}
                                 pagination={false}
                                 columns={columns}
                                 dataSource={this.state.columnsdata}
