@@ -49,7 +49,7 @@ export default class Admin extends Component {
                     ref={node => {
                         this.searchInput = node;
                     }}
-                    placeholder={`Search ${dataIndex}`}
+                    placeholder={"快速查找"}
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
@@ -144,7 +144,7 @@ export default class Admin extends Component {
                 title: '字段名',
                 dataIndex: 'columnname',
                 key: 'columnname',
-                width: '100px',
+                width: '20%',
                 align: "center",
                 sorter: (a, b) => a.columnname.length - b.columnname.length,
                 ...this.getColumnSearchProps('columnname'),
@@ -153,7 +153,7 @@ export default class Admin extends Component {
                 title: '字段描述',
                 dataIndex: 'columncomment',
                 key: 'columncomment',
-                width: '100px',
+                width:  '40%',
                 align: "center",
                 ...this.getColumnSearchProps('columncomment'),
             },
@@ -161,14 +161,14 @@ export default class Admin extends Component {
                 title: '存储类型',
                 dataIndex: 'datatype',
                 key: 'datatype',
-                width: '100px',
+                width:  '20%',
                 align: "center",
             },
             {
                 title: '存储长度',
                 dataIndex: 'datalen',
                 key: 'datalen',
-                width: '100px',
+                
                 align: "center",
             },
         ];
