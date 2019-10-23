@@ -2,8 +2,11 @@ package top.hudk.dictionary.service;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
+import top.hudk.dictionary.entity.Table;
+import top.hudk.dictionary.jdbc.DataBase;
 import top.hudk.dictionary.store.StoreFile;
 
 import java.io.IOException;
@@ -23,6 +26,9 @@ public class DBService {
 
     @Autowired
     StoreFile storeFile;
+
+    @Autowired
+    DataBase dataBase;
 
     public void save(DatabaseConnectionInfo databaseConnectionInfo) throws IOException {
         databaseConnectionInfo.setId(new Integer(storeFile.getNumber() + 1).toString());
@@ -53,5 +59,17 @@ public class DBService {
             }
         }
         return dbList;
+    }
+
+    public List<Table> getTables(String currentDB) throws IOException {
+        List<Table> tables = new ArrayList<Table>();
+        List<DatabaseConnectionInfo> dblist = getAll();
+        DatabaseConnectionInfo dbinfo = null;
+        for(DatabaseConnectionInfo db : dblist){
+            if(currentDB.equals(db.getId())){
+                dbinfo = db;
+            }
+        }
+        return dataBase.getTables(dbinfo);
     }
 }

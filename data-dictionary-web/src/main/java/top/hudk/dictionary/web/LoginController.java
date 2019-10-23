@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.entity.Result;
+import top.hudk.dictionary.entity.Table;
 import top.hudk.dictionary.entity.User;
 import top.hudk.dictionary.service.DBService;
 
@@ -37,7 +38,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/adddb")
+    @PostMapping("/savedb")
     public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) {
         Result result = null;
         try {
@@ -78,9 +79,14 @@ public class LoginController {
      *
      * @return
      */
-    @PostMapping("/getalldblist")
+    @PostMapping("/getdblist")
     public List<DatabaseConnectionInfo> getAllDBList() throws IOException {
         return dBService.getAll();
+    }
+
+    @PostMapping("/gettables")
+    public List<Table> getTables(@RequestParam(required = true) String currentDB) throws IOException {
+        return dBService.getTables(currentDB);
     }
 
 

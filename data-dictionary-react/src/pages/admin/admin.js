@@ -9,29 +9,59 @@ import logo from '../../components/img/logo.png';
 import Highlighter from 'react-highlight-words';
 import { getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
 import InfiniteScroll from 'react-infinite-scroller';
-import { reqGetAllTable } from '../../service/api/api.js';
+import { reqGetTables } from '../../service/api/api.js';
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 export default class Admin extends Component {
 
     state = {
         searchText: '',//列内搜索条件
-        columnsdata: [],
-        tablesdata: [],
-        tablesloading: false,
-        tableshasMore: false,
-        columnsloading: false,
-        columnshasMore: false,
+        columnsdata: [],//字段数据
+        tablesdata: [],//表格数据
+        tablesloading: false,//表格数据加载中
+        tableshasMore: false,//是否还有更多表格数据
+        columnsloading: false,//字段数据接在中
+        columnshasMore: false,//是否还有更多字段数据
+        currentDB: ""
     }
 
 
+
     componentDidMount() {
-        const columnsdata = getcolumnsdata();
-        const tablesdata = gettablesdata();
+        var currentDB = memoryUtils.currentDB;//渲染界面后，从内存获取当下数据源信息
+        // if(currentDB !== "-1"){//若存在数据源，加载数据
+        //     this.setState({
+        //         tablesloading: true
+        //     });
+        //     this.loadTables(currentDB);
+        // }
+        if (currentDB === "-1") {//若不存在数据源，加载虚拟数据
+            const columnsdata = getcolumnsdata();
+            const tablesdata = gettablesdata();
+            this.setState({
+                columnsdata: columnsdata,
+                tablesdata: tablesdata,
+                currentDB: currentDB
+            });
+        }
+    }
+
+
+    //从指定数据源加载表
+    loadTables = async (currentDB) => {
+        if (currentDB === "-1") {
+            return
+        }
         this.setState({
-            columnsdata: columnsdata,
-            tablesdata: tablesdata
+            tablesloading: true
         });
+        const tablesdata = await reqGetTables(currentDB);
+        if (tablesdata.length > 0) {
+            this.setState({
+                tablesdata: tablesdata,
+                tablesloading: false
+            });
+        }
     }
 
     //退出登陆
@@ -110,7 +140,7 @@ export default class Admin extends Component {
 
 
     fetchData = async callback => {
-        const data = await reqGetAllTable();
+        const data = await reqGetTables();
         //
     };
 
@@ -153,7 +183,7 @@ export default class Admin extends Component {
                 title: '字段描述',
                 dataIndex: 'columncomment',
                 key: 'columncomment',
-                width:  '40%',
+                width: '40%',
                 align: "center",
                 ...this.getColumnSearchProps('columncomment'),
             },
@@ -161,14 +191,14 @@ export default class Admin extends Component {
                 title: '存储类型',
                 dataIndex: 'datatype',
                 key: 'datatype',
-                width:  '20%',
+                width: '20%',
                 align: "center",
             },
             {
                 title: '存储长度',
                 dataIndex: 'datalen',
                 key: 'datalen',
-                
+
                 align: "center",
             },
         ];
@@ -192,7 +222,7 @@ export default class Admin extends Component {
                             </div>
 
                             <div className='dblist'>
-                                <Dblist></Dblist>
+                                <Dblist loadTables={this.loadTables}></Dblist>
                             </div>
 
                         </div>
@@ -230,13 +260,13 @@ export default class Admin extends Component {
                                     dataSource={this.state.tablesdata}
                                     renderItem={item => (
                                         <List.Item
-                                            className = "listitem"
+                                            className="listitem"
                                             onClick={this.detail}
                                             key={item.id}
                                         >
                                             <Tooltip placement="rightTop" title="商品表">
                                                 <List.Item.Meta
-                                                    className = "listitemmeta"
+                                                    className="listitemmeta"
                                                     title={item.tablecode}
                                                 />
                                             </Tooltip>

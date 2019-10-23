@@ -3,39 +3,49 @@ import { Form, Input, Select, Icon, Divider, Modal, Button, message } from 'antd
 import dblistjson from './dblist.json'
 import memoryUtils from '../../utils/memoryUtils.js'
 import storageUtils from '../../utils/storageUtils.js'
-import { reqAddDB, reqGetAllDBList } from '../../service/api/api.js'
+import { reqSaveDB, reqGetDBList } from '../../service/api/api.js'
 const { data } = dblistjson;
 const { Option } = Select;
 
 class DBlist extends Component {
 
-    state = {
-        items: [],
-        loading: false,
-        visible: false,
-        confirmDirty: false,
-        autoCompleteResult: [],
-        currentDB: ""
-    };
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            loading: false,
+            visible: false,
+            //confirmDirty: false,
+            autoCompleteResult: [],
+            currentDB: "",
+            //loadTables: this.props.loadTables
+        };
+    }
+    
 
+    //当组件渲染结束，执行数据加载
     async componentDidMount() {
-        const data = await reqGetAllDBList();
+        const data = await reqGetDBList();//远程调用，请求数据库连接数据
         //console.log(data);
         const items = JSON.parse(JSON.stringify(data));
-        console.log(items);
+        //console.log(items);
         var currentDB = memoryUtils.currentDB;
-        console.log(currentDB);
-        if (items.length > 0) {
-            if (currentDB === "-1") {
-                currentDB = items[0].id;
-                storageUtils.setCurrentDB(items[0].id);
+        //console.log(currentDB);
+        if (items.length > 0) {//如果请求到数据
+            if (currentDB === "-1") {//如果本地没有缓存上次的记录
+                currentDB = items[0].id;//将请求到的第一条数据作为当下选中的连接数据
+                storageUtils.setCurrentDB(items[0].id);//保存到本地缓存中
             }
-        } else {
-            storageUtils.setCurrentDB("-1");
-            memoryUtils.currentDB = "-1";
-            currentDB = "选择或添加数据库"
+            const { loadTables } = this.props;
+            loadTables(currentDB);
+        } else {//若没有请求到数据（还没有添加过数据）
+            storageUtils.setCurrentDB("-1");//将缓存标志设置成初始状态
+            memoryUtils.currentDB = "-1";//将临时记忆设置成初始状态
+            currentDB = "选择或添加数据库"//界面输入框将显示这句话
         }
-        console.log(currentDB);
+        //console.log(currentDB);
+        
+        //刷新界面
         this.setState({
             items: items,
             currentDB: currentDB
@@ -64,56 +74,58 @@ class DBlist extends Component {
         this.setState({ visible: false });
     };
 
-    //提交数据及逻辑判断
+    //提交数据到后台保存
     handleSubmit = e => {
         e.preventDefault();
+        //数据校验
         this.props.form.validateFieldsAndScroll(async (err, values) => {
-            if (!err) {
-                const result = await reqAddDB(values);
-                console.log(result);
-                if (result.status === 1) {
-                    message.success(result.msg);
-                    // var items = [];
-                    // if(this.state.items.length === 0){
-                    //     items=[result.data];
-                    // }else{
-                    //     items = [...this.state.items, result.data];
-                    // }
-                    storageUtils.setCurrentDB(result.data.id);
-                    memoryUtils.currentDB = result.data.id;
-                    this.setState({
+            if (!err) {//如果校验通过，执行提交保存
+                const result = await reqSaveDB(values);//请求后台进行保存
+                //console.log(result);
+                if (result.status === 1) {//保存成功
+                    message.success(result.msg);//界面提示成功消息
+                    storageUtils.setCurrentDB(result.data.id);//将新增的链接设置为当下选中的链接，保存到缓存中
+                    memoryUtils.currentDB = result.data.id;//将新增的链接设置为当下选中的链接，保存到内存中
+                    const { loadTables } = this.props;
+                    loadTables(memoryUtils.currentDB);
+                    this.setState({//渲染界面
                         items: [...this.state.items, result.data],
                         loading: false,
                         visible: false,
                         currentDB: result.data.id
                     });
 
-                } else {
-                    message.error(result.msg);
+                } else {//保存失败
+                    message.error(result.msg);//提示失败信息
                     this.setState({ loading: false });
                 }
-                //console.log('Received values of form: ', values);
-            } else {
+            } else {//校验字段有误
                 this.setState({ loading: false });
             }
         });
     };
 
-    handleConfirmBlur = e => {
+    // handleConfirmBlur = e => {
+    //     const { value } = e.target;
+    //     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+    // };
 
-        const { value } = e.target;
-        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-    };
     //数据源变更触发的事件
     handleSelectChange = value => {
         //console.log(value);
         storageUtils.setCurrentDB(value);
         memoryUtils.currentDB = value;
+        const { loadTables } = this.props;
+        loadTables(memoryUtils.currentDB);
+        //console.log(loadTables);
         this.setState({
             currentDB: value
         });
+        //加载表格数据
+        //......todo
     };
 
+    //联动，当数据库类型改变时，为端口赋默认值
     handleDBTypeSelectChange = value => {
         var form = this.props.form;
         if (value === "oracle") {
@@ -129,7 +141,7 @@ class DBlist extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { autoCompleteResult } = this.state;
+        //const { autoCompleteResult } = this.state;
 
         const formItemLayout = {
             labelCol: {
@@ -142,18 +154,18 @@ class DBlist extends Component {
             },
         };
 
-        const tailFormItemLayout = {
-            wrapperCol: {
-                xs: {
-                    span: 4,
-                    offset: 18,
-                },
-                sm: {
-                    span: 4,
-                    offset: 18,
-                },
-            },
-        };
+        // const tailFormItemLayout = {
+        //     wrapperCol: {
+        //         xs: {
+        //             span: 4,
+        //             offset: 18,
+        //         },
+        //         sm: {
+        //             span: 4,
+        //             offset: 18,
+        //         },
+        //     },
+        // };
         const { items, visible, loading } = this.state;
         //jdbc:oracle:thin:@127.0.0.1:1521:orcl
         //jdbc:sqlserver://localhost:1433;databaseName=dbtest
@@ -173,7 +185,7 @@ class DBlist extends Component {
                                 onMouseDown={e => e.preventDefault()}
                                 onClick={this.addItem}
                             >
-                                <Icon type="plus" /> 添加数据库连接
+                                <Icon type="plus" /> 添加数据源
                             </div>
                         </div>
                     )}
@@ -186,8 +198,7 @@ class DBlist extends Component {
                 </Select>
                 <Modal
                     visible={visible}
-                    title="连接数据库"
-                    footer={[]}
+                    title="添加数据源"
                     onCancel={this.handleCancel}
                     footer={[
                         <Button key="back" onClick={this.handleCancel}>
@@ -246,8 +257,6 @@ class DBlist extends Component {
                                 rules: [{ required: true, message: '请输入数据库名称!', whitespace: true }],
                             })(<Input />)}
                         </Form.Item>
-
-
                     </Form>
                 </Modal>
             </div>
