@@ -20,6 +20,6 @@ public class MySQLTableRowMapper implements RowMapper<Table>{
         table.setId(rs.getString("Table_name"));
         table.setTablecode(rs.getString("Table_name"));
         table.setTablename(rs.getString("table_comment"));
-        return null;
+        return table;
     }
 }

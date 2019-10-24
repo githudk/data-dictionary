@@ -17,12 +17,12 @@ public class DataSourcefactory {
         DataSourceBuilder dsbuilder = DataSourceBuilder.create();
         String dbtype = databaseConnectionInfo.getDbtype();
         if (DataSourceType.MySQL.equals(dbtype)) {
-            dsbuilder.driverClassName(DataSourceType.MySQLDriverClassName);
+            //dsbuilder.driverClassName(DataSourceType.MySQLDriverClassName);
             dsbuilder.url("jdbc:mysql://"
                     + databaseConnectionInfo.getDbadrr()
                     + ":" + databaseConnectionInfo.getDbport()
                     + "/" + databaseConnectionInfo.getDbname()
-                    + "?useUnicode=true&characterEncoding=utf8");
+                    + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true");
         }
         if (DataSourceType.Oracle.equals(dbtype)) {
             dsbuilder.driverClassName(DataSourceType.OracleDriverClassName);

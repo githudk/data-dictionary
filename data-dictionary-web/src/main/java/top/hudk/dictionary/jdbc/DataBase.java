@@ -26,21 +26,23 @@ import java.util.List;
 @Component
 public class DataBase {
 
-    public List<Table> getTables(DatabaseConnectionInfo databaseConnectionInfo) {
+    public List<Table> getTables(DatabaseConnectionInfo databaseConnectionInfo) throws SQLException {
         DataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
         JdbcTemplate JdbcTemplate = new JdbcTemplate(ds);
         String sql =SQLfactory.sqlForTables(databaseConnectionInfo);
         RowMapper rowMapper = RowMapperfactory.getTableRowMapper(databaseConnectionInfo);
         List<Table> tables = JdbcTemplate.query(sql,rowMapper);
+        System.out.println(ds.getConnection().isClosed());
         return tables;
     }
 
-    public List<Column> getColumns(DatabaseConnectionInfo databaseConnectionInfo,String tablename) {
+    public List<Column> getColumns(DatabaseConnectionInfo databaseConnectionInfo,String tablename) throws SQLException {
         DataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
         JdbcTemplate JdbcTemplate = new JdbcTemplate(ds);
         String sql =SQLfactory.sqlForColumns(databaseConnectionInfo, tablename);
         RowMapper rowMapper = RowMapperfactory.getColumnRowMapper(databaseConnectionInfo);
         List<Column> column = JdbcTemplate.query(sql,rowMapper);
+        System.out.println(ds.getConnection().isClosed());
         return column;
     }
 

@@ -2,13 +2,11 @@ package top.hudk.dictionary.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.hudk.dictionary.entity.DatabaseConnectionInfo;
-import top.hudk.dictionary.entity.Result;
-import top.hudk.dictionary.entity.Table;
-import top.hudk.dictionary.entity.User;
+import top.hudk.dictionary.entity.*;
 import top.hudk.dictionary.service.DBService;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,14 +77,19 @@ public class LoginController {
      *
      * @return
      */
-    @PostMapping("/getdblist")
+    @GetMapping("/getdblist")
     public List<DatabaseConnectionInfo> getAllDBList() throws IOException {
         return dBService.getAll();
     }
 
-    @PostMapping("/gettables")
-    public List<Table> getTables(@RequestParam(required = true) String currentDB) throws IOException {
+    @GetMapping("/gettables")
+    public List<Table> getTables(@RequestParam(required = true) String currentDB) throws IOException, SQLException {
         return dBService.getTables(currentDB);
+    }
+
+    @GetMapping("/getcolumns")
+    public List<Column> getColumns(@RequestParam(required = true) String currentDB, @RequestParam(required = true) String tablename) throws IOException, SQLException {
+        return dBService.getColumns(currentDB,tablename);
     }
 
 

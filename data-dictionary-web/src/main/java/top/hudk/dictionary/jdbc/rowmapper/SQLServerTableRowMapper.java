@@ -19,6 +19,6 @@ public class SQLServerTableRowMapper  implements RowMapper<Table> {
         table.setId(rs.getString("NAME"));
         table.setTablecode(rs.getString("NAME"));
         table.setTablename(rs.getString("NAME"));
-        return null;
+        return table;
     }
 }

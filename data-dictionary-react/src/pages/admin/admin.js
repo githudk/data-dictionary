@@ -9,7 +9,7 @@ import logo from '../../components/img/logo.png';
 import Highlighter from 'react-highlight-words';
 import { getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
 import InfiniteScroll from 'react-infinite-scroller';
-import { reqGetTables } from '../../service/api/api.js';
+import { reqGetTables, reqGetColumns } from '../../service/api/api.js';
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 export default class Admin extends Component {
@@ -60,6 +60,24 @@ export default class Admin extends Component {
             this.setState({
                 tablesdata: tablesdata,
                 tablesloading: false
+            });
+        }
+    }
+
+    //从指定数据源加载字段
+    loadColumns = async (currentDB, tablename) => {
+        if (currentDB === "-1" || !tablename) {
+            message.warn("数据源或表名未指定！ || ");
+            return
+        }
+        this.setState({
+            columnsloading: true
+        });
+        const columnsdata = await reqGetColumns(currentDB, tablename);
+        if (columnsdata.length > 0) {
+            this.setState({
+                columnsdata: columnsdata,
+                columnsloading: false
             });
         }
     }
@@ -165,8 +183,9 @@ export default class Admin extends Component {
             });
         });
     };
-    detail() {
-        console.log("ddd");
+    detail = (value)=> {
+        //console.log(value);
+        this.loadColumns(memoryUtils.currentDB,value);
     }
     render() {
         const columns = [
@@ -261,11 +280,12 @@ export default class Admin extends Component {
                                     renderItem={item => (
                                         <List.Item
                                             className="listitem"
-                                            onClick={this.detail}
-                                            key={item.id}
+                                            
+                                            key={item.tablename}
                                         >
-                                            <Tooltip placement="rightTop" title="商品表">
+                                            <Tooltip placement="rightTop" title={item.tablename}>
                                                 <List.Item.Meta
+                                                    onClick={ () => {this.detail(item.tablecode)} }
                                                     className="listitemmeta"
                                                     title={item.tablecode}
                                                 />

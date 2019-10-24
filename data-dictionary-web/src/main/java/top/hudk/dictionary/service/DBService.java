@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import top.hudk.dictionary.entity.Column;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.entity.Table;
 import top.hudk.dictionary.jdbc.DataBase;
 import top.hudk.dictionary.store.StoreFile;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +63,7 @@ public class DBService {
         return dbList;
     }
 
-    public List<Table> getTables(String currentDB) throws IOException {
+    public List<Table> getTables(String currentDB) throws IOException, SQLException {
         List<Table> tables = new ArrayList<Table>();
         List<DatabaseConnectionInfo> dblist = getAll();
         DatabaseConnectionInfo dbinfo = null;
@@ -71,5 +73,18 @@ public class DBService {
             }
         }
         return dataBase.getTables(dbinfo);
+    }
+
+
+    public List<Column> getColumns(String currentDB,String tablename) throws IOException, SQLException {
+        List<Column> columns = new ArrayList<Column>();
+        List<DatabaseConnectionInfo> dblist = getAll();
+        DatabaseConnectionInfo dbinfo = null;
+        for(DatabaseConnectionInfo db : dblist){
+            if(currentDB.equals(db.getId())){
+                dbinfo = db;
+            }
+        }
+        return dataBase.getColumns(dbinfo,tablename);
     }
 }
