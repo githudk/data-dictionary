@@ -16,11 +16,11 @@ public class SQLServerColumnRowMapper implements RowMapper<Column> {
     @Override
     public Column mapRow(ResultSet rs, int rowNum) throws SQLException {
         Column column = new Column();
-        column.setKey(rs.getString("NAME"));
-        column.setColumnname(rs.getString("NAME"));
-        column.setColumncomment(rs.getString("NAME"));
-        column.setDatatype(rs.getString("NAME"));
-        column.setDatalen(rs.getString("NAME"));
+        column.setKey(rs.getString("COLUMN_NAME"));
+        column.setColumnname(rs.getString("COLUMN_NAME"));
+        column.setColumncomment(rs.getString("COMMENTS"));
+        column.setDatatype(rs.getString("DATA_TYPE"));
+        column.setDatalen(rs.getString("DATA_LENGTH"));
         return column;
     }
 }

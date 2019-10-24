@@ -16,9 +16,9 @@ public class OracleTableRowMapper implements RowMapper<Table> {
     @Override
     public Table mapRow(ResultSet rs, int rowNum) throws SQLException {
         Table table = new Table();
-        table.setId(rs.getString("NAME"));
-        table.setTablecode(rs.getString("NAME"));
-        table.setTablename(rs.getString("NAME"));
+        table.setId(rs.getString("TABLE_NAME"));
+        table.setTablecode(rs.getString("TABLE_NAME"));
+        table.setTablename(rs.getString("COMMENTS"));
         return table;
     }
 }

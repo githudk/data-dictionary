@@ -8,5 +8,7 @@ export const reqSaveDB = (newDataSource) => ajax('/admin/savedb', newDataSource,
 export const reqGetDBList = () => ajax('/admin/getdblist', {}, 'get');
 //根据数据源ID获取表
 export const reqGetTables = (currentDB) => ajax('/admin/gettables', { currentDB }, 'get');
+//根据数据源ID获取表
+export const reqGetTablesBytext = (currentDB,text) => ajax('/admin/gettablesbytext', { currentDB,text }, 'get');
 //根据数据源ID和表名获取字段
 export const reqGetColumns = (currentDB, tablename) => ajax('/admin/getcolumns', { currentDB, tablename }, 'get');

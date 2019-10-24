@@ -2,24 +2,11 @@
     height: 100%;
     width: 100%;
     .header{
-        height: 60px;
+        height: 100%;
         width: 100%;
         background-color: #aae7ff;
     }
-    .header_b{
-        height: 50px;
-        width: 100%;
-        background-color:#f4f4f4;
-        .search{
-            align-items: center;
-            display: flex;
-            float: left;
-            height: 50px;
-            width: 200px;
-            padding: 0px 10px 10px 10px;
-            background-color: #aae7ff;
-        }
-    }
+
     .logo{
         height: 100%;
         width: 200px;
@@ -38,16 +25,24 @@
     }
     .dblist{
         align-content: center;
-        float: left;
-        margin: 0px 15px;
+        float: right;
+        margin: 0px 30px;
         height: 100%;
         width: 300px;
     }
+    .search{
+        align-items: center;
+        display: flex;
+        height: 50px;
+        width: 100%;
+        padding: 0px 10px 10px 10px;
+        background-color: #aae7ff;
+    }
     .tablelistscroll{
         padding: 10px 0px;
-        height: calc(100vh - 120px);
+        height: calc(100vh - 116px);
         overflow: auto;
-        background-color: #e9e9e9;
+        background-color: #ffffff;
         .loading-container{
             position: absolute;
             bottom: 40px;
@@ -69,9 +64,8 @@
     .tableinfo{
         padding: 15px 0px 0px 0px;
         margin: 0px 50px;
-        height: 100%;
-        float: left;
-        text-align: center;
+        height: 40px;
+        text-align: left;
         line-height:20px;
         .tableinfotext{
             font-size: 20px;
@@ -82,7 +76,7 @@
         align-content: center;
         float: right;
         height: 100%;
-        width: 70px;
+        width: 78px;
     }
     .table{
         overflow: hidden;

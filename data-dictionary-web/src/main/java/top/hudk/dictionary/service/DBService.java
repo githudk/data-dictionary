@@ -76,6 +76,19 @@ public class DBService {
     }
 
 
+    public List<Table> getTablesByText(String currentDB,String text) throws IOException, SQLException {
+        List<Table> tables = new ArrayList<Table>();
+        List<DatabaseConnectionInfo> dblist = getAll();
+        DatabaseConnectionInfo dbinfo = null;
+        for(DatabaseConnectionInfo db : dblist){
+            if(currentDB.equals(db.getId())){
+                dbinfo = db;
+            }
+        }
+        return dataBase.getTablesByText(dbinfo,text);
+    }
+
+
     public List<Column> getColumns(String currentDB,String tablename) throws IOException, SQLException {
         List<Column> columns = new ArrayList<Column>();
         List<DatabaseConnectionInfo> dblist = getAll();

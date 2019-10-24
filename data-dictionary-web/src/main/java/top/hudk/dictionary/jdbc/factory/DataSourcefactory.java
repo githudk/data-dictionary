@@ -5,6 +5,8 @@ import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.util.DataSourceType;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * 作用:
@@ -13,7 +15,26 @@ import javax.sql.DataSource;
  * @date 2019/10/23 22:42
  */
 public class DataSourcefactory {
+
+    private DataSourcefactory(){}
+
+    private static HashMap<String, DataSource> dset = new HashMap<String, DataSource>();
+
     public static DataSource getDataSource(DatabaseConnectionInfo databaseConnectionInfo) {
+        String kay = databaseConnectionInfo.getId();
+        if(!dset.containsKey(kay)){
+            synchronized (DataSourcefactory.class) {
+                if(!dset.containsKey(kay)){
+                    DataSource dataSource = createDataSource(databaseConnectionInfo);
+                    dset.put(kay,dataSource);
+                }
+            }
+
+        }
+        return dset.get(kay);
+    }
+
+    public static DataSource createDataSource(DatabaseConnectionInfo databaseConnectionInfo) {
         DataSourceBuilder dsbuilder = DataSourceBuilder.create();
         String dbtype = databaseConnectionInfo.getDbtype();
         if (DataSourceType.MySQL.equals(dbtype)) {
@@ -25,14 +46,14 @@ public class DataSourcefactory {
                     + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true");
         }
         if (DataSourceType.Oracle.equals(dbtype)) {
-            dsbuilder.driverClassName(DataSourceType.OracleDriverClassName);
+            //dsbuilder.driverClassName(DataSourceType.OracleDriverClassName);
             dsbuilder.url("jdbc:oracle:thin:@"
                     + databaseConnectionInfo.getDbadrr()
                     + ":" + databaseConnectionInfo.getDbport()
                     + "/" + databaseConnectionInfo.getDbname());
         }
         if (DataSourceType.SQLServer.equals(dbtype)) {
-            dsbuilder.driverClassName(DataSourceType.SQLServerDriverClassName);
+            //dsbuilder.driverClassName(DataSourceType.SQLServerDriverClassName);
             dsbuilder.url("jdbc:microsoft:sqlserver://"
                     + databaseConnectionInfo.getDbadrr()
                     + ":" + databaseConnectionInfo.getDbport()

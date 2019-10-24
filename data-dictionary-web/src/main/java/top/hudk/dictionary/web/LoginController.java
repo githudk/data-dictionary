@@ -87,6 +87,12 @@ public class LoginController {
         return dBService.getTables(currentDB);
     }
 
+
+    @GetMapping("/gettablesbytext")
+    public List<Table> getTablesByText(@RequestParam(required = true) String currentDB,@RequestParam(required = true) String text) throws IOException, SQLException {
+        return dBService.getTablesByText(currentDB,text);
+    }
+
     @GetMapping("/getcolumns")
     public List<Column> getColumns(@RequestParam(required = true) String currentDB, @RequestParam(required = true) String tablename) throws IOException, SQLException {
         return dBService.getColumns(currentDB,tablename);

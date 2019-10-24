@@ -9,7 +9,7 @@ import logo from '../../components/img/logo.png';
 import Highlighter from 'react-highlight-words';
 import { getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
 import InfiniteScroll from 'react-infinite-scroller';
-import { reqGetTables, reqGetColumns } from '../../service/api/api.js';
+import { reqGetTables, reqGetColumns ,reqGetTablesBytext} from '../../service/api/api.js';
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 export default class Admin extends Component {
@@ -18,11 +18,15 @@ export default class Admin extends Component {
         searchText: '',//列内搜索条件
         columnsdata: [],//字段数据
         tablesdata: [],//表格数据
+        tablename: '',
+        tablecode: '...',
         tablesloading: false,//表格数据加载中
         tableshasMore: false,//是否还有更多表格数据
         columnsloading: false,//字段数据接在中
         columnshasMore: false,//是否还有更多字段数据
-        currentDB: ""
+        collapsed: false,
+        currentDB: "",      //当下选中的数据源
+        columnscache: {}    //数据缓存
     }
 
 
@@ -70,15 +74,25 @@ export default class Admin extends Component {
             message.warn("数据源或表名未指定！ || ");
             return
         }
-        this.setState({
-            columnsloading: true
-        });
-        const columnsdata = await reqGetColumns(currentDB, tablename);
-        if (columnsdata.length > 0) {
+        //若缓存中存在该数据源中的该表字段信息，则直接使用，不再请求后台。
+        //若缓存中不存在该数据源中的该表字段信息，则请求后台加载数据，并将数据加入缓存。
+        var { columnscache } = this.state;//缓存
+        if (!(currentDB + tablename in columnscache)) {//若缓存中没有找到，则向后台请求数据
+            this.setState({
+                columnsloading: true
+            });
+            //调用后台接口，将请求到的数据加入缓存。
+            columnscache[currentDB + tablename] = await reqGetColumns(currentDB, tablename);
+        }
+        //从缓存拿数据，进行界面展示
+        const columnsdata = columnscache[currentDB + tablename];
+        if (columnsdata && columnsdata.length > 0) {
             this.setState({
                 columnsdata: columnsdata,
                 columnsloading: false
             });
+        } else {
+            message.info("没有找到该表的字段信息！");
         }
     }
 
@@ -183,9 +197,41 @@ export default class Admin extends Component {
             });
         });
     };
-    detail = (value)=> {
-        //console.log(value);
-        this.loadColumns(memoryUtils.currentDB,value);
+    detail = (tablecode,tablename) => {
+
+        this.setState({
+            collapsed: !this.state.collapsed
+        })
+        if(!this.state.collapsed){
+            this.loadColumns(memoryUtils.currentDB, tablecode);
+            this.setState({
+                tablename: tablename,
+                tablecode: tablecode
+            })
+        }
+        
+    }
+    search = async(value) =>{
+        var currentDB = memoryUtils.currentDB;
+        if (currentDB === "-1") {
+            return
+        }
+        if(!value || value === ''){
+            message.warn("请填写查询内容！|| “");
+            return
+        }
+        this.setState({
+            tablesloading: true
+        });
+        const tablesdata = await reqGetTablesBytext(currentDB,value);
+        if (tablesdata.length > 0) {
+            this.setState({
+                tablesdata: tablesdata,
+                tablesloading: false
+            });
+        }else{
+            message.info("没有查询到你要找的内容");
+        }
     }
     render() {
         const columns = [
@@ -226,11 +272,12 @@ export default class Admin extends Component {
         if (loginStatus === 0) {
             return <Redirect to="/login"></Redirect>
         }
+        const { collapsed } = this.state;
         return (
             <div className='admin'>
                 <Layout style={{ height: "100%" }}>
                     {/* 头部开始 */}
-                    <Header style={{ height: "110px", padding: "0px" }}>
+                    <Header style={{ padding: "0px" }}>
                         <div className='header'>
                             <div className='logo'>
                                 <img className='img' src={logo} alt='logo' />
@@ -245,18 +292,6 @@ export default class Admin extends Component {
                             </div>
 
                         </div>
-                        <div className='header_b'>
-                            <div className="search">
-                                <Search
-                                    placeholder="搜索字段或表"
-                                    onSearch={value => console.log(value)}
-                                    style={{ width: "180px" }}
-                                />
-                            </div>
-                            <div className="tableinfo">
-                                <h5 className="tableinfotext">{"b2b_goods(商品表)"}</h5>
-                            </div>
-                        </div>
                     </Header>
                     {/* 头部结束 */}
 
@@ -264,7 +299,15 @@ export default class Admin extends Component {
                     <Layout>
 
                         {/* 左侧侧边列表-开始 */}
-                        <Sider style={{ backgroundColor: '#f4f4f4' }}>
+                        <Sider collapsed={collapsed} width={300}  style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#f4f4f4' }}>
+                            <div className="search">
+                                <Search
+                                    placeholder="搜索字段或表"
+                                    onSearch={value => {this.search(value)}}
+                                    style={{ width: "100%" }}
+                                />
+                            </div>
+
                             <InfiniteScroll
                                 className="tablelistscroll tablelist_scroll"
                                 initialLoad={false}
@@ -280,12 +323,12 @@ export default class Admin extends Component {
                                     renderItem={item => (
                                         <List.Item
                                             className="listitem"
-                                            
+
                                             key={item.tablename}
                                         >
                                             <Tooltip placement="rightTop" title={item.tablename}>
                                                 <List.Item.Meta
-                                                    onClick={ () => {this.detail(item.tablecode)} }
+                                                    onClick={() => { this.detail(item.tablecode,item.tablename) }}
                                                     className="listitemmeta"
                                                     title={item.tablecode}
                                                 />
@@ -307,13 +350,16 @@ export default class Admin extends Component {
 
                         {/* 表格开始 */}
                         <Content style={{ backgroundColor: "#f4f4f4", padding: "0px 15px" }}>
+                            <div className="tableinfo">
+                                <h1 className="tableinfotext">{this.state.tablename+"("+this.state.tablecode+")"}</h1>
+                            </div>
                             <Table
                                 className="table"
                                 loading={this.state.columnsloading}
                                 useFixedHeader={true}
                                 size="small"
                                 bordered
-                                scroll={{ y: "calc(100vh - 170px)" }}
+                                scroll={{ y: "calc(100vh - 165px)" }}
                                 pagination={false}
                                 columns={columns}
                                 dataSource={this.state.columnsdata}
