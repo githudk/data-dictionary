@@ -5,6 +5,7 @@ import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.util.DataSourceType;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -20,11 +21,11 @@ public class DataSourcefactory {
 
     private static HashMap<String, DataSource> dset = new HashMap<String, DataSource>();
 
-    public static DataSource getDataSource(DatabaseConnectionInfo databaseConnectionInfo) {
+    public static DataSource getDataSource(DatabaseConnectionInfo databaseConnectionInfo) throws SQLException {
         String kay = databaseConnectionInfo.getId();
-        if(!dset.containsKey(kay)){
+        if(!hasDataSource(dset,kay)){
             synchronized (DataSourcefactory.class) {
-                if(!dset.containsKey(kay)){
+                if(!hasDataSource(dset,kay)){
                     DataSource dataSource = createDataSource(databaseConnectionInfo);
                     dset.put(kay,dataSource);
                 }
@@ -32,6 +33,21 @@ public class DataSourcefactory {
 
         }
         return dset.get(kay);
+    }
+
+    public static boolean hasDataSource(HashMap<String, DataSource> dset,String kay){
+        boolean isContains =  dset.containsKey(kay);
+        boolean isValid = true;
+        if(isContains){
+            try {
+                isValid = dset.get(kay).getConnection().isValid(5);
+            } catch (Exception e) {
+                isValid = false;
+            }
+        }
+
+
+        return isContains && isValid;
     }
 
     public static DataSource createDataSource(DatabaseConnectionInfo databaseConnectionInfo) {

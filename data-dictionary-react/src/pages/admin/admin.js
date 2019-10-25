@@ -25,8 +25,10 @@ export default class Admin extends Component {
         columnsloading: false,//字段数据接在中
         columnshasMore: false,//是否还有更多字段数据
         collapsed: false,
+        collapsedicon: 'left',
         currentDB: "",      //当下选中的数据源
         columnscache: {}    //数据缓存
+
     }
 
 
@@ -181,14 +183,14 @@ export default class Admin extends Component {
         this.setState({
             tablesloading: true,
         });
-        if (tablesdata.length > 14) {
-            message.warning('Infinite List loaded all');
-            this.setState({
-                tableshasMore: false,
-                tablesloading: false,
-            });
-            return;
-        }
+        // if (tablesdata.length > 14) {
+        //     message.warning('Infinite List loaded all');
+        //     this.setState({
+        //         tableshasMore: false,
+        //         tablesloading: false,
+        //     });
+        //     return;
+        // }
         this.fetchData(res => {
             tablesdata = tablesdata.concat(res.results);
             this.setState({
@@ -197,11 +199,14 @@ export default class Admin extends Component {
             });
         });
     };
-    detail = (tablecode,tablename) => {
 
+    collapsed = () =>{
         this.setState({
-            collapsed: !this.state.collapsed
+            collapsed: !this.state.collapsed,
+            collapsedicon : this.state.collapsedicon === 'left'?'right':"left"
         })
+    }
+    detail = (tablecode,tablename) => {
         if(!this.state.collapsed){
             this.loadColumns(memoryUtils.currentDB, tablecode);
             this.setState({
@@ -210,6 +215,11 @@ export default class Admin extends Component {
             })
         }
         
+    }
+    onSearchText =  () =>{
+        if(this.state.collapsed){
+            this.collapsed();
+        }
     }
     search = async(value) =>{
         var currentDB = memoryUtils.currentDB;
@@ -230,7 +240,10 @@ export default class Admin extends Component {
                 tablesloading: false
             });
         }else{
-            message.info("没有查询到你要找的内容");
+            message.info("没有查询到你要找的内容",5);
+            this.setState({
+                tablesloading: false
+            });
         }
     }
     render() {
@@ -299,25 +312,28 @@ export default class Admin extends Component {
                     <Layout>
 
                         {/* 左侧侧边列表-开始 */}
-                        <Sider collapsed={collapsed} width={300}  style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#f4f4f4' }}>
+                        <Sider collapsedWidth={70} collapsed={collapsed} width={300}  style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#f4f4f4' }}>
                             <div className="search">
                                 <Search
+                                    onClick = {this.onSearchText}
                                     placeholder="搜索字段或表"
                                     onSearch={value => {this.search(value)}}
                                     style={{ width: "100%" }}
                                 />
                             </div>
-
+                            <div className="collapsed" onClick = {this.collapsed} >
+                                <Icon style={{margin:"0px auto",color:"#000"}}  type={"double-"+this.state.collapsedicon} />
+                            </div>
                             <InfiniteScroll
                                 className="tablelistscroll tablelist_scroll"
                                 initialLoad={false}
                                 pageStart={0}
-                                loadMore={this.handleInfiniteOnLoad}
-                                hasMore={!this.state.tablesloading && this.state.tableshasMore}
                                 useWindow={false}
+                                
                             >
                                 <List
                                     size="small"
+                                    loading={this.state.tablesloading}
                                     split={false}
                                     dataSource={this.state.tablesdata}
                                     renderItem={item => (
