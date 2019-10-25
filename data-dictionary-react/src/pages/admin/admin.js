@@ -9,26 +9,27 @@ import logo from '../../components/img/logo.png';
 import Highlighter from 'react-highlight-words';
 import { getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
 import InfiniteScroll from 'react-infinite-scroller';
-import { reqGetTables, reqGetColumns ,reqGetTablesBytext} from '../../service/api/api.js';
+import { reqGetTables, reqGetColumns, reqGetTablesBytext } from '../../service/api/api.js';
 const { Search } = Input;
 const { Header, Sider, Content } = Layout;
 export default class Admin extends Component {
 
+    //全局状态信息
     state = {
-        searchText: '',//列内搜索条件
+        columnSearchText: '',//列搜索关键词
+        tableSearchText: '',//表名搜索关键词
         columnsdata: [],//字段数据
         tablesdata: [],//表格数据
-        tablename: '',
-        tablecode: '...',
+        tablename: '',//当下查看的表的注释
+        tablecode: '',//当下查看的表
         tablesloading: false,//表格数据加载中
         tableshasMore: false,//是否还有更多表格数据
         columnsloading: false,//字段数据接在中
         columnshasMore: false,//是否还有更多字段数据
-        collapsed: false,
-        collapsedicon: 'left',
+        collapsed: false,//左侧是否收起
+        collapsedicon: 'left',//收起按钮样式
         currentDB: "",      //当下选中的数据源
         columnscache: {}    //数据缓存
-
     }
 
 
@@ -98,6 +99,7 @@ export default class Admin extends Component {
         }
     }
 
+
     //退出登陆
     logout = () => {
         storageUtils.logout();
@@ -105,7 +107,7 @@ export default class Admin extends Component {
         this.props.history.replace("/");
     }
 
-    //列内关键词搜索
+    //列内关键词搜索，并将关键词高亮
     getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
             <div style={{ padding: 8 }}>
@@ -149,12 +151,13 @@ export default class Admin extends Component {
         render: text => (
             <Highlighter
                 highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                searchWords={[this.state.searchText]}
+                searchWords={[this.state.columnSearchText]}
                 autoEscape
                 textToHighlight={text.toString()}
             />
         ),
     });
+
 
     //执行列内关键词寻找
     handleSearch = (selectedKeys, confirm) => {
@@ -162,89 +165,109 @@ export default class Admin extends Component {
         this.setState({ searchText: selectedKeys[0] });
     };
 
+
     //重置某列的搜索条件
     handleReset = clearFilters => {
         clearFilters();
         this.setState({ searchText: '' });
     };
+
+
     //点击某行时，执行该方法
     onClickRow = (record, index) => {
 
     }
 
 
-    fetchData = async callback => {
-        const data = await reqGetTables();
-        //
-    };
+    // fetchData = async callback => {
+    //     const data = await reqGetTables();
+    //     //
+    // };
 
-    handleInfiniteOnLoad = () => {
-        let { tablesdata } = this.state;
-        this.setState({
-            tablesloading: true,
-        });
-        // if (tablesdata.length > 14) {
-        //     message.warning('Infinite List loaded all');
-        //     this.setState({
-        //         tableshasMore: false,
-        //         tablesloading: false,
-        //     });
-        //     return;
-        // }
-        this.fetchData(res => {
-            tablesdata = tablesdata.concat(res.results);
-            this.setState({
-                tablesdata,
-                tablesloading: false,
-            });
-        });
-    };
+    // //
+    // handleInfiniteOnLoad = () => {
+    //     let { tablesdata } = this.state;
+    //     this.setState({
+    //         tablesloading: true,
+    //     });
+    //     // if (tablesdata.length > 14) {
+    //     //     message.warning('Infinite List loaded all');
+    //     //     this.setState({
+    //     //         tableshasMore: false,
+    //     //         tablesloading: false,
+    //     //     });
+    //     //     return;
+    //     // }
+    //     this.fetchData(res => {
+    //         tablesdata = tablesdata.concat(res.results);
+    //         this.setState({
+    //             tablesdata,
+    //             tablesloading: false,
+    //         });
+    //     });
+    // };
 
-    collapsed = () =>{
+    //切换左侧栏收起或展开状态
+    collapsed = () => {
         this.setState({
             collapsed: !this.state.collapsed,
-            collapsedicon : this.state.collapsedicon === 'left'?'right':"left"
+            collapsedicon: this.state.collapsedicon === 'left' ? 'right' : "left"
         })
     }
-    detail = (tablecode,tablename) => {
-        if(!this.state.collapsed){
+
+    //选中左侧列表时，右侧显示该选中项的详细内容
+    detail = (tablecode, tablename) => {
+        if (!this.state.collapsed) {
             this.loadColumns(memoryUtils.currentDB, tablecode);
             this.setState({
                 tablename: tablename,
                 tablecode: tablecode
             })
         }
-        
+
     }
-    onSearchText =  () =>{
-        if(this.state.collapsed){
+
+    //点击搜索框时，若左侧栏是收起状态，则将左侧栏展开
+    onSearchText = () => {
+        if (this.state.collapsed) {
             this.collapsed();
         }
     }
-    search = async(value) =>{
+    //全局模糊查询表名或字段
+    search = async (value) => {
         var currentDB = memoryUtils.currentDB;
         if (currentDB === "-1") {
             return
         }
-        if(!value || value === ''){
+        if (!value || value === '') {
             message.warn("请填写查询内容！|| “");
             return
         }
         this.setState({
             tablesloading: true
         });
-        const tablesdata = await reqGetTablesBytext(currentDB,value);
+        const tablesdata = await reqGetTablesBytext(currentDB, value);
         if (tablesdata.length > 0) {
             this.setState({
                 tablesdata: tablesdata,
-                tablesloading: false
+                tablesloading: false,
+                tableSearchText: value,
+                columnSearchText: value
             });
-        }else{
-            message.info("没有查询到你要找的内容",5);
+        } else {
+            message.info("没有查询到你要找的内容", 5);
             this.setState({
                 tablesloading: false
             });
         }
+    }
+    //搜索框中内容改变时，实时改变关键词内容，并将其高亮。
+    onSearchTextChange = (e) => {
+        console.log();
+        this.setState({
+            tableSearchText: e.target.value,
+            columnSearchText: e.target.value
+        });
     }
     render() {
         const columns = [
@@ -312,48 +335,51 @@ export default class Admin extends Component {
                     <Layout>
 
                         {/* 左侧侧边列表-开始 */}
-                        <Sider collapsedWidth={70} collapsed={collapsed} width={300}  style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#f4f4f4' }}>
+                        <Sider collapsedWidth={70} collapsed={collapsed} width={300} style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#f4f4f4' }}>
                             <div className="search">
                                 <Search
-                                    onClick = {this.onSearchText}
+                                    onClick={this.onSearchText}
+                                    onChange={e => { this.onSearchTextChange(e)}}
                                     placeholder="搜索字段或表"
-                                    onSearch={value => {this.search(value)}}
+                                    onSearch={value => { this.search(value)}}
                                     style={{ width: "100%" }}
                                 />
                             </div>
-                            <div className="collapsed" onClick = {this.collapsed} >
-                                <Icon style={{margin:"0px auto",color:"#000"}}  type={"double-"+this.state.collapsedicon} />
+                            <div className="collapsed" onClick={this.collapsed} >
+                                <Icon style={{ margin: "0px auto", color: "#000" }} type={"double-" + this.state.collapsedicon} />
                             </div>
                             <InfiniteScroll
                                 className="tablelistscroll tablelist_scroll"
                                 initialLoad={false}
                                 pageStart={0}
                                 useWindow={false}
-                                
+
                             >
                                 <List
                                     size="small"
-                                    loading={this.state.tablesloading}
+                                    /* loading={this.state.tablesloading} */
                                     split={false}
                                     dataSource={this.state.tablesdata}
                                     renderItem={item => (
                                         <List.Item
                                             className="listitem"
-
                                             key={item.tablename}
                                         >
                                             <Tooltip placement="rightTop" title={item.tablename}>
-                                                <List.Item.Meta
-                                                    onClick={() => { this.detail(item.tablecode,item.tablename) }}
+                                                <Highlighter
                                                     className="listitemmeta"
-                                                    title={item.tablecode}
-                                                />
+                                                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                                                    searchWords={[this.state.tableSearchText]}
+                                                    autoEscape
+                                                    textToHighlight={item.tablecode}
+                                                    onClick={() => { this.detail(item.tablecode, item.tablename) }}
+                                                >
+                                                </Highlighter>
                                             </Tooltip>
-
                                         </List.Item>
                                     )}
                                 >
-                                    {this.state.tablesloading && this.state.tableshasMore && (
+                                    {this.state.tablesloading && (
                                         <div className="loading-container">
                                             <Spin />
                                         </div>
@@ -367,7 +393,7 @@ export default class Admin extends Component {
                         {/* 表格开始 */}
                         <Content style={{ backgroundColor: "#f4f4f4", padding: "0px 15px" }}>
                             <div className="tableinfo">
-                                <h1 className="tableinfotext">{this.state.tablename+"("+this.state.tablecode+")"}</h1>
+                                <h1 className="tableinfotext">{this.state.tablecode ? this.state.tablename + "(" + this.state.tablecode + ")" : "..."}</h1>
                             </div>
                             <Table
                                 className="table"
@@ -387,7 +413,7 @@ export default class Admin extends Component {
                     </Layout>
                     {/*  主体部分结束  */}
                 </Layout>
-            </div>
+            </div >
         )
     }
 }

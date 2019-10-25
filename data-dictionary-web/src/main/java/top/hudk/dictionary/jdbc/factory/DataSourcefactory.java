@@ -1,11 +1,13 @@
 package top.hudk.dictionary.jdbc.factory;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.stereotype.Component;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.util.DataSourceType;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -15,10 +17,12 @@ import java.util.HashSet;
  * @author hudk
  * @date 2019/10/23 22:42
  */
+@Component
 public class DataSourcefactory {
 
     private DataSourcefactory(){}
 
+    private static final ThreadLocal<Deque<String>> CONTEXT_HOLDER = new ThreadLocal();
     private static HashMap<String, DataSource> dset = new HashMap<String, DataSource>();
 
     public static DataSource getDataSource(DatabaseConnectionInfo databaseConnectionInfo) throws SQLException {
@@ -40,7 +44,7 @@ public class DataSourcefactory {
         boolean isValid = true;
         if(isContains){
             try {
-                isValid = dset.get(kay).getConnection().isValid(5);
+                dset.get(kay).getConnection();
             } catch (Exception e) {
                 isValid = false;
             }
