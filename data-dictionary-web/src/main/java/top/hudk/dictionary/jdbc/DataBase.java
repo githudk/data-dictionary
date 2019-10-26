@@ -1,5 +1,6 @@
 package top.hudk.dictionary.jdbc;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -27,29 +28,53 @@ import java.util.List;
 public class DataBase {
 
     public List<Table> getTables(DatabaseConnectionInfo databaseConnectionInfo) throws SQLException {
-        DataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
+        HikariDataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
         JdbcTemplate JdbcTemplate = new JdbcTemplate(ds);
         String sql =SQLfactory.sqlForTables(databaseConnectionInfo);
         RowMapper rowMapper = RowMapperfactory.getTableRowMapper(databaseConnectionInfo);
         List<Table> tables = JdbcTemplate.query(sql,rowMapper);
+        System.out.println("****************");
+        System.out.println("执行close前");
+        System.out.println("HikariDataSource:"+ds.isClosed());
+        System.out.println("Connection"+ds.getConnection().isClosed());
+        ds.getConnection().close();
+        System.out.println("执行close后");
+        System.out.println("HikariDataSource:"+ds.isClosed());
+        System.out.println("Connection"+ds.getConnection().isClosed());
         return tables;
     }
 
     public List<Table> getTablesByText(DatabaseConnectionInfo databaseConnectionInfo,String text) throws SQLException {
-        DataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
+        HikariDataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
         JdbcTemplate JdbcTemplate = new JdbcTemplate(ds);
         String sql =SQLfactory.sqlForTablesByText(databaseConnectionInfo,text);
         RowMapper rowMapper = RowMapperfactory.getTableRowMapper(databaseConnectionInfo);
         List<Table> tables = JdbcTemplate.query(sql,rowMapper);
+        System.out.println("****************");
+        System.out.println("执行close前");
+        System.out.println("HikariDataSource:"+ds.isClosed());
+        System.out.println("Connection"+ds.getConnection().isClosed());
+        ds.getConnection().close();
+        System.out.println("执行close后");
+        System.out.println("HikariDataSource:"+ds.isClosed());
+        System.out.println("Connection"+ds.getConnection().isClosed());
         return tables;
     }
 
     public List<Column> getColumns(DatabaseConnectionInfo databaseConnectionInfo,String tablename) throws SQLException {
-        DataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
+        HikariDataSource ds = DataSourcefactory.getDataSource(databaseConnectionInfo);
         JdbcTemplate JdbcTemplate = new JdbcTemplate(ds);
         String sql =SQLfactory.sqlForColumns(databaseConnectionInfo, tablename);
         RowMapper rowMapper = RowMapperfactory.getColumnRowMapper(databaseConnectionInfo);
         List<Column> column = JdbcTemplate.query(sql,rowMapper);
+        System.out.println("****************");
+        System.out.println("执行close前");
+        System.out.println("HikariDataSource:"+ds.isClosed());
+        System.out.println("Connection"+ds.getConnection().isClosed());
+        ds.getConnection().close();
+        System.out.println("执行close后");
+        System.out.println("HikariDataSource:"+ds.isClosed());
+        System.out.println("Connection"+ds.getConnection().isClosed());
         return column;
     }
 

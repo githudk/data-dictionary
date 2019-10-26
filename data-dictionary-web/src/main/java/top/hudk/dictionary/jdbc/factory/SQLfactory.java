@@ -38,13 +38,22 @@ public class SQLfactory {
         String dbname = databaseConnectionInfo.getDbname();
         String sql = "";
         if (DataSourceType.MySQL.equals(dbtype)) {
-            sql = "SELECT TABLE_NAME,IFNULL(TABLE_COMMENT,TABLE_NAME) TABLE_COMMENT,TABLE_SCHEMA " +
-                    " FROM INFORMATION_SCHEMA.TABLES " +
-                    "WHERE  TABLE_SCHEMA='" + dbname + "' " +
-                    "and TABLE_NAME like %" + text + "%";
+            sql = "SELECT DISTINCT " +
+                    "  col.TABLE_NAME, " +
+                    "  IFNULL(tab.TABLE_COMMENT, tab.TABLE_NAME) TABLE_COMMENT " +
+                    "FROM " +
+                    "  INFORMATION_SCHEMA.COLUMNS col " +
+                    "  LEFT JOIN INFORMATION_SCHEMA.TABLES tab " +
+                    "  ON tab.table_name = col.table_name " +
+                    "  AND col.TABLE_SCHEMA = tab.TABLE_SCHEMA " +
+                    "WHERE col.TABLE_SCHEMA = '" + dbname + "'  " +
+                    "  AND (tab.TABLE_NAME LIKE '%" + text + "%' " +
+                    "  OR tab.TABLE_COMMENT LIKE '%" + text + "%' " +
+                    "  OR col.COLUMN_NAME LIKE '%" + text + "%' " +
+                    "  OR col.COLUMN_COMMENT LIKE '%" + text + "%')";
         }
         if (DataSourceType.Oracle.equals(dbtype)) {
-            sql = "    SELECT DISTINCT COLS.TABLE_NAME, TABCOM.COMMENTS " +
+            sql = "    SELECT DISTINCT COLS.TABLE_NAME, NVL(TABCOM.COMMENTS,COLS.TABLE_NAME) COMMENTS " +
                     "  FROM USER_TAB_COLS COLS " +
                     "  LEFT JOIN USER_COL_COMMENTS COMM " +
                     "    ON COLS.COLUMN_NAME = COMM.COLUMN_NAME " +
