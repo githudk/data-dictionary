@@ -34,24 +34,24 @@ export default class Admin extends Component {
 
 
 
-    componentDidMount() {
-        var currentDB = memoryUtils.currentDB;//渲染界面后，从内存获取当下数据源信息
-        // if(currentDB !== "-1"){//若存在数据源，加载数据
-        //     this.setState({
-        //         tablesloading: true
-        //     });
-        //     this.loadTables(currentDB);
-        // }
-        if (currentDB === "-1") {//若不存在数据源，加载虚拟数据
-            const columnsdata = getcolumnsdata();
-            const tablesdata = gettablesdata();
-            this.setState({
-                columnsdata: columnsdata,
-                tablesdata: tablesdata,
-                currentDB: currentDB
-            });
-        }
-    }
+    // componentDidMount() {
+    //     var currentDB = memoryUtils.currentDB;//渲染界面后，从内存获取当下数据源信息
+    //     // if(currentDB !== "-1"){//若存在数据源，加载数据
+    //     //     this.setState({
+    //     //         tablesloading: true
+    //     //     });
+    //     //     this.loadTables(currentDB);
+    //     // }
+    //     if (currentDB === "-1") {//若不存在数据源，加载虚拟数据
+    //         const columnsdata = getcolumnsdata();
+    //         const tablesdata = gettablesdata();
+    //         this.setState({
+    //             columnsdata: columnsdata,
+    //             tablesdata: tablesdata,
+    //             currentDB: currentDB
+    //         });
+    //     }
+    // }
 
 
     //从指定数据源加载表
@@ -66,7 +66,8 @@ export default class Admin extends Component {
         if (tablesdata.length > 0) {
             this.setState({
                 tablesdata: tablesdata,
-                tablesloading: false
+                tablesloading: false,
+                currentDB: currentDB
             });
         }
     }
@@ -235,12 +236,13 @@ export default class Admin extends Component {
     }
     //全局模糊查询表名或字段
     search = async (value) => {
-        var currentDB = memoryUtils.currentDB;
+        this.onSearchText();
+        var currentDB = !this.state.currentDB ? memoryUtils.currentDB : this.state.currentDB;
         if (currentDB === "-1") {
             return
         }
         if (!value || value === '') {
-            message.warn("请填写查询内容！|| “");
+            this.loadTables(currentDB);
             return
         }
         this.setState({
@@ -277,7 +279,7 @@ export default class Admin extends Component {
                 key: 'columnname',
                 width: '20%',
                 align: "center",
-                sorter: (a, b) => a.columnname.length - b.columnname.length,
+                sorter: (a, b) => a.columnname.localeCompare(b.columnname, 'zh-CN'),
                 ...this.getColumnSearchProps('columnname'),
             },
             {
@@ -313,7 +315,7 @@ export default class Admin extends Component {
             <div className='admin'>
                 <Layout style={{ height: "100%" }}>
                     {/* 头部开始 */}
-                    <Header style={{ padding: "0px" }}>
+                    <Header style={{ padding: "0px", height: "60px" }}>
                         <div className='header'>
                             <div className='logo'>
                                 <img className='img' src={logo} alt='logo' />
@@ -322,11 +324,9 @@ export default class Admin extends Component {
                             <div className='logoutbt'>
                                 <Button onClick={this.logout}>退出</Button>
                             </div>
-
                             <div className='dblist'>
                                 <Dblist loadTables={this.loadTables}></Dblist>
                             </div>
-
                         </div>
                     </Header>
                     {/* 头部结束 */}
@@ -335,25 +335,25 @@ export default class Admin extends Component {
                     <Layout>
 
                         {/* 左侧侧边列表-开始 */}
-                        <Sider collapsedWidth={70} collapsed={collapsed} width={300} style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#f4f4f4' }}>
+                        <Sider collapsedWidth={70} collapsed={collapsed} width={300} style={{ boxShadow: "5px 10px 6px #eee", backgroundColor: '#fff' }}>
                             <div className="search">
                                 <Search
                                     onClick={this.onSearchText}
-                                    onChange={e => { this.onSearchTextChange(e)}}
+                                    onChange={e => { this.onSearchTextChange(e) }}
                                     placeholder="搜索字段或表"
-                                    onSearch={value => { this.search(value)}}
+                                    onSearch={value => { this.search(value) }}
                                     style={{ width: "100%" }}
                                 />
                             </div>
                             <div className="collapsed" onClick={this.collapsed} >
                                 <Icon style={{ margin: "0px auto", color: "#000" }} type={"double-" + this.state.collapsedicon} />
                             </div>
+                            {this.state.tablesloading ? (<Spin className="tableloading-container" />) : ""}
                             <InfiniteScroll
                                 className="tablelistscroll tablelist_scroll"
                                 initialLoad={false}
                                 pageStart={0}
                                 useWindow={false}
-
                             >
                                 <List
                                     size="small"
@@ -379,29 +379,35 @@ export default class Admin extends Component {
                                         </List.Item>
                                     )}
                                 >
-                                    {this.state.tablesloading && (
-                                        <div className="loading-container">
-                                            <Spin />
-                                        </div>
-                                    )}
+
                                 </List>
+
                                 {/* <BackTop target={}></BackTop> */}
                             </InfiniteScroll>
+
                         </Sider>
                         {/* 左侧侧边列表-结束 */}
 
                         {/* 表格开始 */}
                         <Content style={{ backgroundColor: "#f4f4f4", padding: "0px 15px" }}>
                             <div className="tableinfo">
-                                <h1 className="tableinfotext">{this.state.tablecode ? this.state.tablename + "(" + this.state.tablecode + ")" : "..."}</h1>
+                                <Highlighter
+                                    className="tableinfotext"
+                                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                                    searchWords={[this.state.tableSearchText]}
+                                    autoEscape
+                                    textToHighlight={this.state.tablecode ? this.state.tablename + " (" + this.state.tablecode + ")" : "..."}
+                                >
+                                </Highlighter>
+                                {/* <h1 className="tableinfotext">{this.state.tablecode ? this.state.tablename + " (" + this.state.tablecode + ")" : "..."}</h1> */}
                             </div>
                             <Table
                                 className="table"
                                 loading={this.state.columnsloading}
-                                useFixedHeader={true}
+
                                 size="small"
                                 bordered
-                                scroll={{ y: "calc(100vh - 165px)" }}
+                                scroll={{ y: "calc(100vh - 180px)" }}
                                 pagination={false}
                                 columns={columns}
                                 dataSource={this.state.columnsdata}

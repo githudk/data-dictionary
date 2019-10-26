@@ -36,15 +36,15 @@ class DBlist extends Component {
                 currentDB = items[0].id;//将请求到的第一条数据作为当下选中的连接数据
                 storageUtils.setCurrentDB(items[0].id);//保存到本地缓存中
             }
-            const { loadTables } = this.props;
-            loadTables(currentDB);
+            
+            
         } else {//若没有请求到数据（还没有添加过数据）
             storageUtils.setCurrentDB("-1");//将缓存标志设置成初始状态
             memoryUtils.currentDB = "-1";//将临时记忆设置成初始状态
             currentDB = "选择或添加数据库"//界面输入框将显示这句话
         }
-        //console.log(currentDB);
-        
+        const { loadTables } = this.props;
+        loadTables(currentDB);  
         //刷新界面
         this.setState({
             items: items,
