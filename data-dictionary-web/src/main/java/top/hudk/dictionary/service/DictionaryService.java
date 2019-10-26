@@ -2,7 +2,6 @@ package top.hudk.dictionary.service;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import top.hudk.dictionary.entity.Column;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
@@ -24,7 +23,7 @@ import java.util.Map;
  * @date 2019/10/18 15:45
  */
 @Service
-public class DBService {
+public class DictionaryService {
 
     @Autowired
     StoreFile storeFile;

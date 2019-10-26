@@ -3,7 +3,7 @@ package top.hudk.dictionary.entity;
 import lombok.Data;
 
 /**
- * 作用:
+ * 作用:表数据对象
  *
  * @author hudk
  * @date 2019/10/23 20:48

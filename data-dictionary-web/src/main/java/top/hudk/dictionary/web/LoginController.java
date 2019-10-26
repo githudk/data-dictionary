@@ -3,15 +3,10 @@ package top.hudk.dictionary.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.hudk.dictionary.entity.*;
-import top.hudk.dictionary.service.DBService;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import top.hudk.dictionary.service.DictionaryService;
 
 /**
- * 作用:
+ * 作用:登陆校验
  *
  * @author hudk
  * @date 2019/10/15 17:57
@@ -21,8 +16,11 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    DBService dBService;
+    DictionaryService dBService;
 
+    /**
+     * 用户名和密码，通过配置文件方式进行设置。
+     */
     @Autowired
     private User user;
 
@@ -35,68 +33,6 @@ public class LoginController {
         return new Result(0, "用户名或密码错误");
     }
 
-
-    @PostMapping("/savedb")
-    public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) {
-        Result result = null;
-        try {
-            dBService.save(databaseConnectionInfo);
-            result = new Result(1, "保存成功");
-        } catch (IOException e) {
-            result = new Result(0, "保存失败："+e.getMessage());
-        }
-        result.setData(databaseConnectionInfo);
-        return result;
-    }
-
-    /**
-     * {
-     * "dbadrr": "10.10.4.16",
-     * "dbname": "orcl",
-     * "dbport": "1521",
-     * "dbtype": "oracle",
-     * "password": "123456",
-     * "username": "GREE"
-     * },
-     * {
-     * "dbadrr": "39.106.229.84",
-     * "dbname": "solo2",
-     * "dbport": "3306",
-     * "dbtype": "mysql",
-     * "password": "111111",
-     * "username": "hudk"
-     * },
-     * {
-     * "dbadrr": "127.0.0.1",
-     * "dbname": "qqq",
-     * "dbport": "1433",
-     * "dbtype": "sqlserver",
-     * "password": "gh",
-     * "username": "qqq"
-     * }
-     *
-     * @return
-     */
-    @GetMapping("/getdblist")
-    public List<DatabaseConnectionInfo> getAllDBList() throws IOException {
-        return dBService.getAll();
-    }
-
-    @GetMapping("/gettables")
-    public List<Table> getTables(@RequestParam(required = true) String currentDB) throws IOException, SQLException {
-        return dBService.getTables(currentDB);
-    }
-
-
-    @GetMapping("/gettablesbytext")
-    public List<Table> getTablesByText(@RequestParam(required = true) String currentDB,@RequestParam(required = true) String text) throws IOException, SQLException {
-        return dBService.getTablesByText(currentDB,text);
-    }
-
-    @GetMapping("/getcolumns")
-    public List<Column> getColumns(@RequestParam(required = true) String currentDB, @RequestParam(required = true) String tablename) throws IOException, SQLException {
-        return dBService.getColumns(currentDB,tablename);
-    }
 
 
 }

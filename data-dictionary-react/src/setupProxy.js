@@ -11,7 +11,13 @@ module.exports = function(app) {
     })
   );
   app.use(
-    proxy("/admin/login", {
+    proxy("/datasource", {
+      target: "http://127.0.0.1:8888/",
+      changeOrigin: true
+    })
+  );
+  app.use(
+    proxy("/dictionary", {
       target: "http://127.0.0.1:8888/",
       changeOrigin: true
     })

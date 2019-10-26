@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
- * 作用:
+ * 作用:数据源数据对象
  *
  * @author hudk
  * @date 2019/10/16 22:04
