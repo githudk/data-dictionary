@@ -32,7 +32,7 @@ public class DataBase {
 
     private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
 
-    public List<Table> getTables(DatabaseConnectionInfo databaseConnectionInfo){
+    public List<Table> getTables(DatabaseConnectionInfo databaseConnectionInfo) throws Exception {
 
 
         String key = databaseConnectionInfo.getId();
@@ -48,12 +48,12 @@ public class DataBase {
         int active = ds.getHikariPoolMXBean().getActiveConnections();
         int total = ds.getHikariPoolMXBean().getTotalConnections();
 
-        logger.debug("取连接后总连接数：" + total +"空闲的接数：" +idle+", 活动的接数：" +active+";");
+        logger.debug("取连接后 总连接数：" + total +", 空闲的接数：" +idle+", 活动的接数：" +active+";");
         logger.info("从数据源: '"+ key +"' 中获取所有表，成功; ");
         return tables;
     }
 
-    public List<Table> getTablesByText(DatabaseConnectionInfo databaseConnectionInfo, String text){
+    public List<Table> getTablesByText(DatabaseConnectionInfo databaseConnectionInfo, String text) throws Exception {
 
         String key = databaseConnectionInfo.getId();
         logger.info("从数据源: '"+ key +"' 中搜索内容，关键词："+ text +"; ");
@@ -68,13 +68,13 @@ public class DataBase {
         int active = ds.getHikariPoolMXBean().getActiveConnections();
         int total = ds.getHikariPoolMXBean().getTotalConnections();
 
-        logger.debug("取连接后总连接数：" + total +"空闲的接数：" +idle+", 活动的接数：" +active+";");
+        logger.debug("取连接后 总连接数：" + total +", 空闲的接数：" +idle+", 活动的接数：" +active+";");
 
         logger.info("从数据源: '"+ key +"' 中搜索内容，关键词："+ text +"，成功; ");
         return tables;
     }
 
-    public List<Column> getColumns(DatabaseConnectionInfo databaseConnectionInfo, String tablename){
+    public List<Column> getColumns(DatabaseConnectionInfo databaseConnectionInfo, String tablename) throws Exception {
         String key = databaseConnectionInfo.getId();
         logger.info("从数据源: '"+ key +"' ，表：'"+ tablename +"' 中查询“字段”; ");
 
@@ -88,7 +88,7 @@ public class DataBase {
         int active = ds.getHikariPoolMXBean().getActiveConnections();
         int total = ds.getHikariPoolMXBean().getTotalConnections();
 
-        logger.debug("取连接后总连接数：" + total +"空闲的接数：" +idle+", 活动的接数：" +active+";");
+        logger.debug("取连接后 总连接数：" + total +", 空闲的接数：" +idle+", 活动的接数：" +active+";");
 
         logger.info("从数据源: '"+ key +"' ，表：'"+ tablename +"' 中查询“字段”，成功; ");
         return column;

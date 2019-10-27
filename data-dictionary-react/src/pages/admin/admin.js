@@ -75,7 +75,7 @@ export default class Admin extends Component {
     //从指定数据源加载字段
     loadColumns = async (currentDB, tablename) => {
         if (currentDB === "-1" || !tablename) {
-            message.warn("数据源或表名未指定！ || ");
+            message.warn("数据源或表名未指定！ (+_+)? ");
             return
         }
         //若缓存中存在该数据源中的该表字段信息，则直接使用，不再请求后台。
@@ -96,7 +96,7 @@ export default class Admin extends Component {
                 columnsloading: false
             });
         } else {
-            message.info("没有找到该表的字段信息！");
+            message.info("没有找到该表的字段信息！ ㄟ( ▔, ▔ )ㄏ");
         }
     }
 
@@ -257,7 +257,7 @@ export default class Admin extends Component {
                 columnSearchText: value
             });
         } else {
-            message.info("没有查询到你要找的内容", 5);
+            message.info("没有查询到你要找的内容 ╮（╯＿╰）╭", 5);
             this.setState({
                 tablesloading: false
             });
@@ -271,6 +271,10 @@ export default class Admin extends Component {
             columnSearchText: e.target.value
         });
     }
+    handleInfiniteOnLoad = () => {
+        
+      };
+
     render() {
         const columns = [
             {
@@ -354,6 +358,7 @@ export default class Admin extends Component {
                                 initialLoad={false}
                                 pageStart={0}
                                 useWindow={false}
+                                loadMore={this.handleInfiniteOnLoad}
                             >
                                 <List
                                     size="small"
@@ -404,7 +409,6 @@ export default class Admin extends Component {
                             <Table
                                 className="table"
                                 loading={this.state.columnsloading}
-
                                 size="small"
                                 bordered
                                 scroll={{ y: "calc(100vh - 180px)" }}

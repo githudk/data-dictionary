@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.entity.DefHikariConfig;
 import top.hudk.dictionary.util.DataSourceType;
+import top.hudk.dictionary.util.Ping;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -36,7 +38,7 @@ public class DataSourcefactory {
      * @return
      * @throws SQLException
      */
-    public HikariDataSource getDataSource(DatabaseConnectionInfo databaseConnectionInfo) {
+    public HikariDataSource getDataSource(DatabaseConnectionInfo databaseConnectionInfo) throws Exception {
         String key = databaseConnectionInfo.getId();
         if (!hikariDataSourceMap.containsKey(key)) {
             synchronized (DataSourcefactory.class) {
@@ -52,7 +54,7 @@ public class DataSourcefactory {
         String dbtype = databaseConnectionInfo.getDbtype();
 
         logger.info("获取到"+ dbtype +"数据源,id:"+key);
-        logger.debug("取连接前总连接数：" + total +"空闲的接数：" +idle+", 活动的接数：" +active+";");
+        logger.debug("取连接前 总连接数：" + total +", 空闲的接数：" +idle+", 活动的接数：" +active+";");
 
         return hikariDataSourceMap.get(key);
     }
@@ -64,7 +66,9 @@ public class DataSourcefactory {
      * @param databaseConnectionInfo
      * @return
      */
-    public   HikariDataSource createHikariDataSource(DatabaseConnectionInfo databaseConnectionInfo) {
+    public   HikariDataSource createHikariDataSource(DatabaseConnectionInfo databaseConnectionInfo) throws Exception {
+        String ip = databaseConnectionInfo.getDbadrr();
+        Ping.pingTest(ip);
         HikariDataSource ds;
         //自定义数据源配置信息
         HikariConfig conf = new HikariConfig();
@@ -99,7 +103,14 @@ public class DataSourcefactory {
 
         logger.info("创建连接池，类型：" + dbtype);
         //根据数据源信息，创建连接池
-        ds = new HikariDataSource(conf);
+        try{
+            ds = new HikariDataSource(conf);
+        }catch (Exception e){
+
+            logger.info("连接创建失败；");
+            throw new Exception("连接创建失败；");
+        }
+
         logger.info("连接池:" + ds.getPoolName() + "创建完成；");
         return ds;
     }

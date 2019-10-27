@@ -62,8 +62,8 @@ public class DictionaryService {
         return dbList;
     }
 
-    public List<Table> getTables(String currentDB) throws IOException, SQLException {
-        List<Table> tables = new ArrayList<Table>();
+    public List<Table> getTables(String currentDB) throws Exception {
+        List<Table> tables = new ArrayList<>();
         List<DatabaseConnectionInfo> dblist = getAll();
         DatabaseConnectionInfo dbinfo = null;
         for(DatabaseConnectionInfo db : dblist){
@@ -75,7 +75,7 @@ public class DictionaryService {
     }
 
 
-    public List<Table> getTablesByText(String currentDB,String text) throws IOException, SQLException {
+    public List<Table> getTablesByText(String currentDB,String text) throws Exception {
         List<Table> tables = new ArrayList<Table>();
         List<DatabaseConnectionInfo> dblist = getAll();
         DatabaseConnectionInfo dbinfo = null;
@@ -88,7 +88,7 @@ public class DictionaryService {
     }
 
 
-    public List<Column> getColumns(String currentDB,String tablename) throws IOException, SQLException {
+    public List<Column> getColumns(String currentDB,String tablename) throws Exception {
         List<Column> columns = new ArrayList<Column>();
         List<DatabaseConnectionInfo> dblist = getAll();
         DatabaseConnectionInfo dbinfo = null;

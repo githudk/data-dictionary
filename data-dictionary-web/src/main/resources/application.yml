@@ -24,6 +24,6 @@ defhikariconfig:
 #配置级别为trace，控制台打印所有级别日志  TRACE < DEBUG < INFO < WARN < ERROR
 logging:
   level:
-    top.hudk.dictionary: TRACE
+    top.hudk.dictionary: DEBUG
   path: ./logs
    #com.wang.logging : trace

@@ -9,7 +9,7 @@ const { Option } = Select;
 
 class DBlist extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             items: [],
@@ -21,7 +21,7 @@ class DBlist extends Component {
             //loadTables: this.props.loadTables
         };
     }
-    
+
 
     //当组件渲染结束，执行数据加载
     async componentDidMount() {
@@ -36,15 +36,15 @@ class DBlist extends Component {
                 currentDB = items[0].id;//将请求到的第一条数据作为当下选中的连接数据
                 storageUtils.setCurrentDB(items[0].id);//保存到本地缓存中
             }
-            
-            
+
+
         } else {//若没有请求到数据（还没有添加过数据）
             storageUtils.setCurrentDB("-1");//将缓存标志设置成初始状态
             memoryUtils.currentDB = "-1";//将临时记忆设置成初始状态
             currentDB = "选择或添加数据库"//界面输入框将显示这句话
         }
         const { loadTables } = this.props;
-        loadTables(currentDB);  
+        loadTables(currentDB);
         //刷新界面
         this.setState({
             items: items,
@@ -153,23 +153,10 @@ class DBlist extends Component {
                 sm: { span: 16 },
             },
         };
-
-        // const tailFormItemLayout = {
-        //     wrapperCol: {
-        //         xs: {
-        //             span: 4,
-        //             offset: 18,
-        //         },
-        //         sm: {
-        //             span: 4,
-        //             offset: 18,
-        //         },
-        //     },
-        // };
         const { items, visible, loading } = this.state;
-        //jdbc:oracle:thin:@127.0.0.1:1521:orcl
-        //jdbc:sqlserver://localhost:1433;databaseName=dbtest
-        //jdbc:mysql://127.0.0.1:3306/test
+
+        var ipRegExp = new RegExp("^(([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+        var portRegExp = new RegExp("^([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])$");
         return (
             <div>
                 <Select
@@ -227,34 +214,40 @@ class DBlist extends Component {
                         </Form.Item>
                         <Form.Item label="用户">
                             {getFieldDecorator('username', {
-                                rules: [{ required: true, message: '请输入用户名' }],
+                                rules: [{ max: 100, required: true, message: '要求：非空，长度小于100' }],
                             })(<Input />)}
                         </Form.Item>
 
                         <Form.Item label="密码" hasFeedback>
                             {getFieldDecorator('password', {
                                 rules: [
-                                    { required: true, message: '请输入密码!' },
+                                    { max: 100, required: true, message: '要求：非空，长度小于100' },
                                     { validator: this.validateToNextPassword },
                                 ],
                             })(<Input.Password />)}
                         </Form.Item>
 
-                        <Form.Item label="数据库地址">
+                        <Form.Item label="数据库ip地址">
                             {getFieldDecorator('dbadrr', {
-                                rules: [{ required: true, message: '请输入数据库地址!', whitespace: true }],
+                                rules: [{
+                                    pattern: ipRegExp,
+                                    required: true, message: '请输入有效的数据库ip地址!', whitespace: true
+                                }],
                             })(<Input />)}
                         </Form.Item>
 
                         <Form.Item label="端口">
                             {getFieldDecorator('dbport', {
-                                rules: [{ required: true, message: '请输入数据库端口!', whitespace: true }],
+                                rules: [{
+                                    pattern: portRegExp,
+                                    required: true, message: '请输入有效的数据库端口!', whitespace: true
+                                }],
                             })(<Input />)}
                         </Form.Item>
 
                         <Form.Item label="数据库名" >
                             {getFieldDecorator('dbname', {
-                                rules: [{ required: true, message: '请输入数据库名称!', whitespace: true }],
+                                rules: [{ max: 100 , required: true, message: '要求：非空，长度小于100', whitespace: true }],
                             })(<Input />)}
                         </Form.Item>
                     </Form>

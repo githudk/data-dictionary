@@ -19,8 +19,8 @@ public class ColumnRowMapper implements RowMapper<Column> {
         column.setKey(rs.getString("COLUMN_NAME"));
         column.setColumnname(rs.getString("COLUMN_NAME"));
         column.setColumncomment(rs.getString("COLUMN_COMMENT"));
-        column.setDatatype(rs.getString("DATA_TYPE"));
-        column.setDatalen(rs.getString("DATA_LENGTH"));
+        column.setDatatype(rs.getString("DATA_TYPE") == null ? "--" : rs.getString("DATA_TYPE"));
+        column.setDatalen(rs.getString("DATA_LENGTH") == null ? "--" : rs.getString("DATA_LENGTH"));
         return column;
     }
 }

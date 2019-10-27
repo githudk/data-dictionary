@@ -1,5 +1,7 @@
 package top.hudk.dictionary.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.hudk.dictionary.entity.Column;
 import top.hudk.dictionary.entity.Table;
+import top.hudk.dictionary.jdbc.factory.DataSourcefactory;
 import top.hudk.dictionary.service.DictionaryService;
 
 import java.io.IOException;
@@ -27,6 +30,8 @@ public class DictionaryController {
     @Autowired
     DictionaryService dBService;
 
+    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+
     /**
      * 根据当下的数据源ID，获取该数据源下的所有Table
      * @param currentDB
@@ -35,8 +40,16 @@ public class DictionaryController {
      * @throws SQLException
      */
     @GetMapping("/gettables")
-    public List<Table> getTables(@RequestParam(required = true) String currentDB) throws IOException, SQLException {
-        return dBService.getTables(currentDB);
+    public List<Table> getTables(@RequestParam(required = true) String currentDB) throws Exception {
+
+        logger.info(">>>>>>>>>>>>>>请求处理开始：数据源：" + currentDB + ", 获取表;");
+
+        List<Table> list =  dBService.getTables(currentDB);
+
+        logger.info(">>>>>>>>>>>>>>请求处理结束!");
+
+        return list;
+
     }
 
 
@@ -49,8 +62,15 @@ public class DictionaryController {
      * @throws SQLException
      */
     @GetMapping("/gettablesbytext")
-    public List<Table> getTablesByText(@RequestParam(required = true) String currentDB,@RequestParam(required = true) String text) throws IOException, SQLException {
-        return dBService.getTablesByText(currentDB,text);
+    public List<Table> getTablesByText(@RequestParam(required = true) String currentDB,@RequestParam(required = true) String text) throws Exception {
+
+        logger.info(">>>>>>>>>>>>>>请求处理开始：数据源：" + currentDB + ", 关键词："+ text +";");
+
+        List<Table> list = dBService.getTablesByText(currentDB,text);
+
+        logger.info(">>>>>>>>>>>>>>请求处理结束!");
+
+        return list;
     }
 
     /**
@@ -62,8 +82,15 @@ public class DictionaryController {
      * @throws SQLException
      */
     @GetMapping("/getcolumns")
-    public List<Column> getColumns(@RequestParam(required = true) String currentDB, @RequestParam(required = true) String tablename) throws IOException, SQLException {
-        return dBService.getColumns(currentDB,tablename);
+    public List<Column> getColumns(@RequestParam(required = true) String currentDB, @RequestParam(required = true) String tablename) throws Exception {
+
+        logger.info(">>>>>>>>>>>>>>请求处理开始：数据源：" + currentDB + ", 获取表'"+ tablename +"'中的字段;");
+
+        List<Column> list = dBService.getColumns(currentDB,tablename);
+
+        logger.info(">>>>>>>>>>>>>>请求处理结束!");
+
+        return list;
     }
 
 }
