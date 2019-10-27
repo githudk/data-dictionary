@@ -32,23 +32,28 @@ public class DataSourceController {
     public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) {
 
         logger.info(">>>>>>>>>>>>>>请求处理开始：添加数据源;");
-
         Result result = null;
-        try {
+        boolean re = dBService.testConnection(databaseConnectionInfo);
+        if(re){
 
-            dBService.save(databaseConnectionInfo);
+            try {
 
-            logger.info(">>>>>>>>>>>>>>添加成功;");
+                dBService.save(databaseConnectionInfo);
 
-            result = new Result(1, "保存成功");
-        } catch (IOException e) {
+                logger.info(">>>>>>>>>>>>>>添加成功;");
 
-            logger.info(">>>>>>>>>>>>>>添加失败:"+e.getMessage());
+                result = new Result(1, "保存成功");
+            } catch (IOException e) {
 
-            result = new Result(0, "保存失败："+e.getMessage());
+                logger.info(">>>>>>>>>>>>>>添加失败:"+e.getMessage());
+
+                result = new Result(0, "保存失败："+e.getMessage());
+            }
+            result.setData(databaseConnectionInfo);
+        }else{
+            logger.info("保存失败：无法访问数据库");
+            result = new Result(0, "保存失败：无法访问数据库,请检查数据源信息是否正确，然后重试！");
         }
-        result.setData(databaseConnectionInfo);
-
         logger.info(">>>>>>>>>>>>>>请求处理结束;");
 
         return result;

@@ -12,7 +12,7 @@ import java.net.UnknownHostException;
  */
 public class Ping {
 
-    public static void pingTest(String ip) throws Exception {
+    public static boolean pingTest(String ip) throws Exception {
         int timeout = 3000;
         boolean result = false;
         try {
@@ -23,5 +23,6 @@ public class Ping {
         if(!result){
             throw  new Exception("数据库连接失败！");
         }
+        return result;
     }
 }

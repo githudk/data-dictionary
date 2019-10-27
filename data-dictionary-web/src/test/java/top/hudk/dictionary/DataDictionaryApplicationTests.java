@@ -19,25 +19,25 @@ public class DataDictionaryApplicationTests {
     @Test
     public void contextLoads() throws IOException {
 
-        storeFile.saveToFile("123456");
+        //storeFile.saveToFile("123456");
 
     }
     @Test
     public void contextLoads2() throws IOException {
 
-        int s = storeFile.getNumber();
-        System.out.println(s);
+        //int s = storeFile.getNumber();
+        //System.out.println(s);
 
     }
     @Test
     public void contextLoads3() throws IOException {
 
-        storeFile.replaceLine(2,"99");
+        //storeFile.replaceLine(2,"99");
     }
     @Test
     public void contextLoads4() throws IOException {
 
-        storeFile.deleteLine(2);
+       // storeFile.deleteLine(2);
     }
 
 }

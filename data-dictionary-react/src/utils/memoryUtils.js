@@ -4,5 +4,6 @@
 
  export default {
     loginStatus: 0,
-    currentDB : ""
+    currentDB : "",
+    currentDBdata: []
  }

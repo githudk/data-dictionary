@@ -15,7 +15,7 @@ export default function ajax(url, data = {}, type = "get") {
             resolve(response.data)
         }).catch((error) => {
             console.log(error.message);
-            message.error("请求出错[＞﹏＜]");
+            message.error("真不巧，出错了[＞﹏＜]");
         })
     });
 

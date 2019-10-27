@@ -1,5 +1,6 @@
 package top.hudk.dictionary.store;
 
+import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -24,44 +25,58 @@ public class StoreFile {
     String relativelyPath = System.getProperty("user.dir");
 
 
-    public void saveToFile(String str) throws IOException {
+    /**
+     * 增加或修改
+     * @param str
+     * @param id
+     * @throws IOException
+     */
+    public void saveOrEditToFile(String str,String id) throws IOException {
         System.out.println(relativelyPath);
         File file = new File(relativelyPath + fileName);
         if (!file.exists()) {
             file.createNewFile();
             List<String> replaced = new ArrayList<>();
-            replaced.add("1");
+            //replaced.add("1");
             replaced.add("【add at " + getNowTime() + "】" + str);
             Files.write(Paths.get(file.toURI()), replaced);
         } else {
             List<String> lines = Files.readAllLines(Paths.get(file.toURI()));
             List<String> replaced = new ArrayList<>();
-            //String lineone = lines.get(0);
-            Integer i = new Integer(lines.get(0));
-            i++;
-            int lineNo = 0;
-            for (String line : lines) {
-                if (lineNo == 0) {
-                    replaced.add(i.toString());
-                } else {
-                    replaced.add(line);
+            boolean rep = true;
+            for(int i=0;i<lines.size();i++){
+                if(lines.get(i).contains(id)){
+                    replaced.add("【edit at " + getNowTime() + "】" + str);
+                    rep = false;
+                }else{
+                    replaced.add(lines.get(i));
                 }
-                lineNo++;
             }
-            replaced.add("【add at " + getNowTime() + "】" + str);
+            if(rep){
+                replaced.add("【add at " + getNowTime() + "】" + str);
+            }
             Files.write(Paths.get(file.toURI()), replaced);
         }
 
     }
 
+    /**
+     * 获取总数量
+     */
     public int getNumber() throws IOException {
         File file = new File(relativelyPath + fileName);
         if (!file.exists()) {
             return new Integer(0);
         }
-        return Files.readAllLines(Paths.get(file.toURI())).size() - 1;
+        return Files.readAllLines(Paths.get(file.toURI())).size();
     }
 
+    /**
+     *
+     * @param LineNumber
+     * @param str
+     * @throws IOException
+     */
     public void replaceLine(int LineNumber, String str) throws IOException {
         if (LineNumber <= 0) {
             return;
@@ -89,8 +104,13 @@ public class StoreFile {
         Files.write(Paths.get(file.toURI()), replaced);
     }
 
-    public void deleteLine(int LineNumber) throws IOException {
-        if (LineNumber <= 0) {
+    /**
+     * 删除
+     * @param id
+     * @throws IOException
+     */
+    public void deleteLine(String id) throws IOException {
+        if (id == null || "".equals(id) || id.length() < 10) {
             return;
         }
         File file = new File(relativelyPath + fileName);
@@ -99,28 +119,32 @@ public class StoreFile {
         }
         List<String> lines = Files.readAllLines(Paths.get(file.toURI()));
         List<String> replaced = new ArrayList<>();
-        int lineNo = 1;
-        for (String line : lines) {
-            if (lineNo == LineNumber + 1) {
-                line = line.substring(line.lastIndexOf("】")+1);
-                replaced.add("【delete at " + getNowTime() + "】" + line);
-            } else {
-                replaced.add(line);
+        int numb = 0 ;
+        for(int i=0;i<lines.size();i++){
+            if(lines.get(i).contains(id)){
+                numb++;
+            }else{
+                replaced.add(lines.get(i));
             }
-            lineNo++;
         }
-        Files.write(Paths.get(file.toURI()), replaced);
+        if(numb==1){
+            Files.write(Paths.get(file.toURI()), replaced);
+        }
+
     }
 
 
+    /**
+     * 查
+     * @return
+     * @throws IOException
+     */
     public List<String> getALL() throws IOException {
         List<String> lines = null;
         File file = new File(relativelyPath + fileName);
         if (!file.exists()) {
             file.createNewFile();
             List<String> replaced = new ArrayList<>();
-            replaced.add("0");
-            Files.write(Paths.get(file.toURI()), replaced);
             return lines;
         }
         lines = Files.readAllLines(Paths.get(file.toURI()));

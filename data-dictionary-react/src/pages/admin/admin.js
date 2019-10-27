@@ -273,7 +273,7 @@ export default class Admin extends Component {
     }
     handleInfiniteOnLoad = () => {
         
-      };
+    };
 
     render() {
         const columns = [
