@@ -23,9 +23,7 @@ export default class Admin extends Component {
         tablename: '',//当下查看的表的注释
         tablecode: '',//当下查看的表
         tablesloading: false,//表格数据加载中
-        tableshasMore: false,//是否还有更多表格数据
-        columnsloading: false,//字段数据接在中
-        columnshasMore: false,//是否还有更多字段数据
+        columnsloading: false,//字段数据加载中
         collapsed: false,//左侧是否收起
         collapsedicon: 'left',//收起按钮样式
         currentDB: "",      //当下选中的数据源
@@ -53,6 +51,20 @@ export default class Admin extends Component {
     //     }
     // }
 
+    empty = () => {
+        this.setState({
+            columnSearchText: '',//列搜索关键词
+            tableSearchText: '',//表名搜索关键词
+            columnsdata: [],//字段数据
+            tablesdata: [],//表格数据
+            tablename: '',//当下查看的表的注释
+            tablecode: '',//当下查看的表
+            tablesloading: false,//表格数据加载中
+            columnsloading: false,//字段数据加载中
+            currentDB: "-1",      //当下选中的数据源
+            columnscache: {}    //数据缓存
+        });
+    }
 
     //从指定数据源加载表
     loadTables = async (currentDB) => {
@@ -63,13 +75,14 @@ export default class Admin extends Component {
             tablesloading: true
         });
         const tablesdata = await reqGetTables(currentDB);
-        if (tablesdata.length > 0) {
-            this.setState({
-                tablesdata: tablesdata,
-                tablesloading: false,
-                currentDB: currentDB
-            });
+        if (tablesdata.length === 0) {
+            message.warn("在当下数据源中一张表都没找到！ㄟ( ▔, ▔ )ㄏ");
         }
+        this.setState({
+            tablesdata: tablesdata,
+            tablesloading: false,
+            currentDB: currentDB
+        });
     }
 
     //从指定数据源加载字段
@@ -272,7 +285,7 @@ export default class Admin extends Component {
         });
     }
     handleInfiniteOnLoad = () => {
-        
+
     };
 
     render() {
@@ -329,7 +342,7 @@ export default class Admin extends Component {
                                 <Button onClick={this.logout}>退出</Button>
                             </div>
                             <div className='dblist'>
-                                <Dblist loadTables={this.loadTables}></Dblist>
+                                <Dblist loadTables={this.loadTables} empty={this.empty}></Dblist>
                             </div>
                         </div>
                     </Header>

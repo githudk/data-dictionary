@@ -1,9 +1,9 @@
 package top.hudk.dictionary.store;
 
-import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;

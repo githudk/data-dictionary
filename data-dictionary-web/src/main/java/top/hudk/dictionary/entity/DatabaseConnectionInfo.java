@@ -27,15 +27,15 @@ public class DatabaseConnectionInfo {
     private String dbtype;
 
     @Override
-    public String toString(){
+    public String toString() {
         String str = "{data:{" +
-                "\"id\":" +id+","+
-                "\"username\":\"" +username+"\","+
-                "\"password\":\"" +password+"\","+
-                "\"dbadrr\":\"" +dbadrr+"\","+
-                "\"dbport\":\"" +dbport+"\","+
-                "\"dbname\":\"" +dbname+"\","+
-                "\"dbtype\":\"" +dbtype+"\","+
+                "\"id\":\"" + id + "\"," +
+                "\"username\":\"" + username + "\"," +
+                "\"password\":\"" + password + "\"," +
+                "\"dbadrr\":\"" + dbadrr + "\"," +
+                "\"dbport\":\"" + dbport + "\"," +
+                "\"dbname\":\"" + dbname + "\"," +
+                "\"dbtype\":\"" + dbtype + "\"," +
                 "}}";
         return str;
     }

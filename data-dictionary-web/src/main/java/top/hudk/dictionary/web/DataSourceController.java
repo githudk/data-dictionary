@@ -29,7 +29,7 @@ public class DataSourceController {
     private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
 
     @PostMapping("/savedb")
-    public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) {
+    public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) throws Exception {
 
         logger.info(">>>>>>>>>>>>>>请求处理开始：添加数据源;");
         Result result = null;
@@ -73,6 +73,17 @@ public class DataSourceController {
         logger.info(">>>>>>>>>>>>>>请求处理结束;");
 
         return list;
+    }
+
+    @GetMapping("/delete")
+    public Result delete(@RequestParam(value = "currentDB",required = true) String currentDB) throws Exception {
+
+        logger.info(">>>>>>>>>>>>>>请求处理开始：删除数据源：" + currentDB);
+        Result result = null;
+        dBService.delete(currentDB);
+        result = new Result(1, "删除成功");
+        logger.info(">>>>>>>>>>>>>>请求处理结束,删除成功;");
+        return result;
     }
 
 }

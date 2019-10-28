@@ -59,6 +59,13 @@ public class DataSourcefactory {
         return hikariDataSourceMap.get(key);
     }
 
+    public Boolean hasContainsKey(String key){
+        return hikariDataSourceMap.containsKey(key);
+    }
+
+    public void remove(String key){
+        hikariDataSourceMap.remove(key);
+    }
     /**
      * 根据数据源信息，创建对应的连接池，并返回。
      * 支持: Mysql、Oracle、SQLServer

@@ -9,6 +9,8 @@ export const reqGetDBList = () => ajax('/datasource/getdblist', {}, 'get');
 //根据数据源ID获取表
 export const reqGetTables = (currentDB) => ajax('/dictionary/gettables', { currentDB }, 'get');
 //根据数据源ID获取表
-export const reqGetTablesBytext = (currentDB,text) => ajax('/dictionary/gettablesbytext', { currentDB,text }, 'get');
+export const reqGetTablesBytext = (currentDB, text) => ajax('/dictionary/gettablesbytext', { currentDB, text }, 'get');
 //根据数据源ID和表名获取字段
 export const reqGetColumns = (currentDB, tablename) => ajax('/dictionary/getcolumns', { currentDB, tablename }, 'get');
+//添加数据源
+export const reqDeleteDB = (currentDB) => ajax('/datasource/delete', { currentDB }, 'get');
