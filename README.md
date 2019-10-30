@@ -20,7 +20,7 @@
 数据源的编辑和删除表单↓
 ![Alt](https://images.gitee.com/uploads/images/2019/1030/233654_d912c271_4968345.png)
 
-左侧“表信息”的列表↓
+左侧“表信息”的列表，可折叠收起；左上方是图标和全局搜索框↓
 ![Alt](https://images.gitee.com/uploads/images/2019/1030/233653_72db816d_4968345.png)
 
 关键词高亮显示↓
