@@ -78,44 +78,62 @@ public class DataSourcefactory {
         Ping.pingTest(ip);
         HikariDataSource ds;
         //自定义数据源配置信息
+
         HikariConfig conf = new HikariConfig();
         String dbtype = databaseConnectionInfo.getDbtype();
+        logger.info("创建连接池，类型：" + dbtype);
+        logger.info("配置连接池：");
         if (DataSourceType.MySQL.equals(dbtype)) {
-            conf.setJdbcUrl("jdbc:mysql://"
+            String mysqlurl = "jdbc:mysql://"
                     + databaseConnectionInfo.getDbadrr()
                     + ":" + databaseConnectionInfo.getDbport()
                     + "/" + databaseConnectionInfo.getDbname()
-                    + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true");
+                    + "?useUnicode=true&characterEncoding=utf8&autoReconnect=true";
+            conf.setDriverClassName(DataSourceType.MySQLDriverClassName);
+            conf.setJdbcUrl(mysqlurl);
+            logger.info("数据源URL："+mysqlurl);
         }
         if (DataSourceType.Oracle.equals(dbtype)) {
-            conf.setJdbcUrl("jdbc:oracle:thin:@"
+            String oracleurl = "jdbc:oracle:thin:@"
                     + databaseConnectionInfo.getDbadrr()
                     + ":" + databaseConnectionInfo.getDbport()
-                    + "/" + databaseConnectionInfo.getDbname());
+                    + "/" + databaseConnectionInfo.getDbname();
+            conf.setDriverClassName(DataSourceType.OracleDriverClassName);
+            conf.setJdbcUrl(oracleurl);
+            logger.info("数据源URL："+oracleurl);
         }
         if (DataSourceType.SQLServer.equals(dbtype)) {
-            conf.setJdbcUrl("jdbc:microsoft:sqlserver://"
+            String sqlserverurl = "jdbc:microsoft:sqlserver://"
                     + databaseConnectionInfo.getDbadrr()
                     + ":" + databaseConnectionInfo.getDbport()
-                    + "; DatabaseName=" + databaseConnectionInfo.getDbname());
+                    + "; DatabaseName=" + databaseConnectionInfo.getDbname();
+            conf.setDriverClassName(DataSourceType.SQLServerDriverClassName);
+            conf.setJdbcUrl(sqlserverurl);
+            logger.info("数据源URL："+sqlserverurl);
         }
         conf.setUsername(databaseConnectionInfo.getUsername());
+        logger.info("数据源用户："+databaseConnectionInfo.getUsername());
         conf.setPassword(databaseConnectionInfo.getPassword());
+        logger.info("数据源密码："+databaseConnectionInfo.getPassword());
 
         conf.setReadOnly(defConf.isReadOnly());//只读
+        logger.info("是否只读：" + defConf.isReadOnly());
         conf.setConnectionTimeout(defConf.getConnectionTimeout());//从连接池取出连接的最长等待时间，超过此事件则会报错
+        logger.info("从连接池取出连接的最长等待时间：" + defConf.getConnectionTimeout());
         conf.setIdleTimeout(defConf.getIdleTimeout());//连接允许在池中闲置的最长时间，0表示永久允许闲置
+        logger.info("连接允许在池中闲置的最长时间：" + defConf.getIdleTimeout());
         conf.setMinimumIdle(defConf.getMinimumIdle());//池中维护的最小空闲连接数
+        logger.info("池中维护的最小空闲连接数：" + defConf.getMinimumIdle());
         conf.setMaximumPoolSize(defConf.getMaximumPoolSize());//池中最大连接数，包括闲置和使用中的连接
-
-        logger.info("创建连接池，类型：" + dbtype);
+        logger.info("池中最大连接数：" + defConf.getMaximumPoolSize());
+        logger.info("配置结束，开始创建");
         //根据数据源信息，创建连接池
         try{
             ds = new HikariDataSource(conf);
         }catch (Exception e){
-
-            logger.info("连接创建失败；");
-            throw new Exception("连接创建失败；");
+            logger.info("连接池创建失败:"+e.getMessage());
+            e.printStackTrace();
+            throw new Exception("连接池创建失败；");
         }
 
         logger.info("连接池:" + ds.getPoolName() + "创建完成；");

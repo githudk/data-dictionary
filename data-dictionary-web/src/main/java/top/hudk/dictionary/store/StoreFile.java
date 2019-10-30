@@ -1,6 +1,10 @@
 package top.hudk.dictionary.store;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import top.hudk.dictionary.jdbc.factory.DataSourcefactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +24,11 @@ import java.util.List;
 @Component
 public class StoreFile {
 
-    private String fileName = "\\store.dblist";
+    private String fileName = "\\dataSource.dic";
 
-    String relativelyPath = System.getProperty("user.dir");
+    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+
+    private String relativelyPath = this.getClass().getResource("/").getPath();
 
 
     /**
@@ -34,8 +40,10 @@ public class StoreFile {
     public void saveOrEditToFile(String str,String id) throws IOException {
         System.out.println(relativelyPath);
         File file = new File(relativelyPath + fileName);
+        logger.info("向文件添加或修改数据："+relativelyPath + fileName);
         if (!file.exists()) {
             file.createNewFile();
+
             List<String> replaced = new ArrayList<>();
             //replaced.add("1");
             replaced.add("【add at " + getNowTime() + "】" + str);

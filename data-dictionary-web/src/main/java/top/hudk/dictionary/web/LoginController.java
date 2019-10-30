@@ -1,12 +1,19 @@
 package top.hudk.dictionary.web;
 
+import org.apache.coyote.Response;
+import org.omg.CORBA.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import top.hudk.dictionary.entity.*;
 import top.hudk.dictionary.jdbc.factory.DataSourcefactory;
 import top.hudk.dictionary.service.DictionaryService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 作用:登陆校验
@@ -15,7 +22,7 @@ import top.hudk.dictionary.service.DictionaryService;
  * @date 2019/10/15 17:57
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("")
 public class LoginController {
 
     @Autowired
@@ -29,7 +36,7 @@ public class LoginController {
     @Autowired
     private User user;
 
-    @GetMapping("/login")
+    @GetMapping("/admin/login")
     public Result login(@RequestParam(value = "username", required = true) String username,
                         @RequestParam(value = "password", required = true) String password) {
 
@@ -41,6 +48,11 @@ public class LoginController {
         }
         logger.info(">>>>>>>>>>>>>>登陆失败！");
         return new Result(0, "用户名或密码错误");
+    }
+
+    @RequestMapping("/")
+    public void goAdmin(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        response.sendRedirect(request.getContextPath()+"/login");
     }
 
 

@@ -1,7 +1,7 @@
 package top.hudk.dictionary.util;
 
 /**
- * 作用:
+ * 作用: 定义全局常用的常量
  *
  * @author hudk
  * @date 2019/10/23 22:49
@@ -14,7 +14,7 @@ public class DataSourceType {
 
     public static final String SQLServer = "sqlserver";
 
-    public static final String MySQLDriverClassName = "com.mysql.cj.jdbc.driver";
+    public static final String MySQLDriverClassName = "com.mysql.cj.jdbc.Driver";
 
     public static final String OracleDriverClassName = "oracle.jdbc.driver.OracleDriver";
 

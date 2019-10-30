@@ -280,7 +280,7 @@ class DBlist extends Component {
 
             console.log(DBlist);
             memoryUtils.currentDBlist = DBlist;
-            if(DBlist || DBlist.length === 0){//当最后一个数据源被删除后，清空并初始化整个应用
+            if(!DBlist || DBlist.length === 0){//当最后一个数据源被删除后，清空并初始化整个应用
                 storageUtils.setCurrentDB("-1");//将缓存标志设置成初始状态
                 memoryUtils.currentDB = "-1";//将临时记忆设置成初始状态
                 var { empty } = this.props;
@@ -294,6 +294,8 @@ class DBlist extends Component {
                 });
 
             }else if (editcurrentDB === currentDB) {//当被删除的数据源正好是目前正在用的数据源时，触发数据源变更。
+                storageUtils.setCurrentDB(DBlist[0].id);//更新状态
+                memoryUtils.currentDB = DBlist[0].id;//更新状态
                 this.setState({//渲染界面
                     DBlist: DBlist,
                     deleteloading: false,
@@ -303,6 +305,8 @@ class DBlist extends Component {
                 });
                 this.handleSelectChange(DBlist[0].id);
             } else {
+                storageUtils.setCurrentDB(currentDB);//更新状态
+                memoryUtils.currentDB = currentDB;//更新状态
                 this.setState({//渲染界面
                     DBlist: DBlist,
                     deleteloading: false,

@@ -62,3 +62,6 @@ local.properties
 
 occ-portal-static/src/wbalone/META-INF/maven/
 .flattened-pom.xml
+*.dic
+*.gz
+*.dblist

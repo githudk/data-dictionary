@@ -69,6 +69,7 @@ misc.xml
 # Maven
 ######################
 /log/
+/logs
 /target/
 **/target/
 ######################
@@ -89,4 +90,5 @@ local.properties
 
 occ-portal-static/src/wbalone/META-INF/maven/
 .flattened-pom.xml
+store.dblist
 

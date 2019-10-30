@@ -117,7 +117,10 @@ public class DictionaryService {
         boolean result = true;
         List<Table> tables = null;
         String id = dbinfo.getId();
-        if (dataSourcefactory.hasContainsKey(id)) {
+        if (id == null || "".equals(id)) {//新增
+            long t1 = System.currentTimeMillis();
+            dbinfo.setId(new Long(t1).toString());
+        } else if (dataSourcefactory.hasContainsKey(id)) {
             HikariDataSource ds = dataSourcefactory.getDataSource(dbinfo);
             ds.close();
             dataSourcefactory.remove(id);
