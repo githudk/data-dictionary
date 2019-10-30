@@ -6,22 +6,22 @@
 ## 页面
 
 登陆页↓
-![Alt](http://static.hudk.top/img/dic/login.png)
+![Alt](https://images.gitee.com/uploads/images/2019/1030/233656_7719528b_4968345.png)
 
 功能主页↓
 ![Alt](http://static.hudk.top/img/dic/admin.png)
 
-右上侧可以对数据源进行切换和管理
-![Alt](http://static.hudk.top/img/dic/db.png)
+右上侧可以对数据源进行切换和管理↓
+![Alt](https://images.gitee.com/uploads/images/2019/1030/233651_69e2428a_4968345.png)
 
 数据源的添加表单↓
 ![Alt](http://static.hudk.top/img/dic/dbadd.png)
 
 数据源的编辑和删除表单↓
-![Alt](http://static.hudk.top/img/dic/dbedit.png)
+![Alt](https://images.gitee.com/uploads/images/2019/1030/233654_d912c271_4968345.png)
 
 左侧“表信息”的列表↓
-![Alt](http://static.hudk.top/img/dic/left.png)
+![Alt](https://images.gitee.com/uploads/images/2019/1030/233653_72db816d_4968345.png)
 
 关键词高亮显示↓
 ![Alt](http://static.hudk.top/img/dic/highfont.png)
