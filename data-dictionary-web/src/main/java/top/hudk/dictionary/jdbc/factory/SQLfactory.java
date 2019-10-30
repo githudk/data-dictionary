@@ -1,5 +1,7 @@
 package top.hudk.dictionary.jdbc.factory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.hudk.dictionary.entity.DatabaseConnectionInfo;
 import top.hudk.dictionary.util.DataSourceType;
 
@@ -11,6 +13,7 @@ import top.hudk.dictionary.util.DataSourceType;
  */
 public class SQLfactory {
 
+    private static Logger logger = LoggerFactory.getLogger(SQLfactory.class);
     /**
      * 根据不用数据源，构建并返回相应查询“表”信息的SQL脚本
      * @param databaseConnectionInfo
@@ -24,6 +27,7 @@ public class SQLfactory {
             sql = "SELECT TABLE_NAME,IFNULL(TABLE_COMMENT,TABLE_NAME) TABLE_COMMENT " +
                     " FROM INFORMATION_SCHEMA.TABLES " +
                     "WHERE  TABLE_SCHEMA='" + dbname + "'";
+
         }
         if (DataSourceType.Oracle.equals(dbtype)) {
             sql = "SELECT DISTINCT T.TABLE_NAME, NVL(C.COMMENTS,T.TABLE_NAME) TABLE_COMMENT " +
@@ -34,6 +38,7 @@ public class SQLfactory {
         if (DataSourceType.SQLServer.equals(dbtype)) {
 
         }
+        logger.info("获取表SQL:"+sql);
         return sql;
     }
 
@@ -80,6 +85,7 @@ public class SQLfactory {
         if (DataSourceType.SQLServer.equals(dbtype)) {
 
         }
+        logger.info("模糊查询SQL:"+sql);
         return sql;
     }
 
@@ -98,6 +104,7 @@ public class SQLfactory {
                     "FROM INFORMATION_SCHEMA.COLUMNS " +
                     "WHERE TABLE_SCHEMA='" + dbname + "' " +
                     "AND TABLE_NAME='" + tablename + "'";
+
         }
         if (DataSourceType.Oracle.equals(dbtype)) {
             sql = "SELECT COLS.COLUMN_NAME, " +
@@ -113,6 +120,7 @@ public class SQLfactory {
         if (DataSourceType.SQLServer.equals(dbtype)) {
 
         }
+        logger.info("获取字段SQL:"+sql);
         return sql;
     }
 }

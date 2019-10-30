@@ -30,7 +30,7 @@ public class DictionaryController {
     @Autowired
     DictionaryService dBService;
 
-    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+    private Logger logger = LoggerFactory.getLogger(DictionaryController.class);
 
     /**
      * 根据当下的数据源ID，获取该数据源下的所有Table

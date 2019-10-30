@@ -38,7 +38,7 @@ public class DictionaryService {
     @Autowired
     DataSourcefactory dataSourcefactory;
 
-    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+    private Logger logger = LoggerFactory.getLogger(DictionaryService.class);
 
     public void save(DatabaseConnectionInfo databaseConnectionInfo) throws IOException {
 
@@ -46,8 +46,6 @@ public class DictionaryService {
         if (id == null || "".equals(id)) {//新增
             long t1 = System.currentTimeMillis();
             databaseConnectionInfo.setId(new Long(t1).toString());
-        } else {//修改
-
         }
         storeFile.saveOrEditToFile(databaseConnectionInfo.toString(), databaseConnectionInfo.getId());
     }
@@ -133,7 +131,7 @@ public class DictionaryService {
             }
             tables = dataBase.getTables(dbinfo);
         } catch (Exception e) {
-            logger.debug("访问数据库失败：" + e.getMessage());
+            logger.error("访问数据库失败：" + e.getMessage());
             result = false;
         }
         return result;

@@ -28,7 +28,7 @@ public class LoginController {
     @Autowired
     DictionaryService dBService;
 
-    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+    private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     /**
      * 用户名和密码，通过配置文件方式进行设置。

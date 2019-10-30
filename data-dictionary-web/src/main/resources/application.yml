@@ -3,9 +3,9 @@ server:
   port: 8888
 
 # 登陆用户名和密码配置
-apploginuser:
-  username: admin
-  password: 123456
+appLoginUser:
+  userName: admin
+  passWord: 123456
 
 #自定义的连接池配置
 defhikariconfig:
@@ -24,6 +24,6 @@ defhikariconfig:
 #配置级别为trace，控制台打印所有级别日志  TRACE < DEBUG < INFO < WARN < ERROR
 logging:
   level:
-    top.hudk.dictionary: DEBUG
+    top.hudk.dictionary: ERROR
   path: ./logs
    #com.wang.logging : trace

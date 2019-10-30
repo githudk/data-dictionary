@@ -26,7 +26,7 @@ public class DataSourceController {
     @Autowired
     DictionaryService dBService;
 
-    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+    private Logger logger = LoggerFactory.getLogger(DataSourceController.class);
 
     @PostMapping("/savedb")
     public Result<DatabaseConnectionInfo> adddb(@RequestBody() DatabaseConnectionInfo databaseConnectionInfo) throws Exception {
@@ -45,7 +45,7 @@ public class DataSourceController {
                 result = new Result(1, "保存成功");
             } catch (IOException e) {
 
-                logger.info(">>>>>>>>>>>>>>添加失败:"+e.getMessage());
+                logger.error(">>>>>>>>>>>>>>添加失败:"+e.getMessage());
 
                 result = new Result(0, "保存失败："+e.getMessage());
             }

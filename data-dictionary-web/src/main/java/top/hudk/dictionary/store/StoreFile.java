@@ -24,9 +24,9 @@ import java.util.List;
 @Component
 public class StoreFile {
 
-    private String fileName = "\\dataSource.dic";
+    private String fileName = "dataSource.dic";
 
-    private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
+    private Logger logger = LoggerFactory.getLogger(StoreFile.class);
 
     private String relativelyPath = this.getClass().getResource("/").getPath();
 

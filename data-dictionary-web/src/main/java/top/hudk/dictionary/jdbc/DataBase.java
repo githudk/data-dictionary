@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * 作用:
+ * 作用:查询表，字段，模糊查询
  *
  * @author hudk
  * @date 2019/10/23 21:56
@@ -32,6 +32,12 @@ public class DataBase {
 
     private Logger logger = LoggerFactory.getLogger(DataSourcefactory.class);
 
+    /**
+     * 获取当下数据源中的所有表
+     * @param databaseConnectionInfo
+     * @return
+     * @throws Exception
+     */
     public List<Table> getTables(DatabaseConnectionInfo databaseConnectionInfo) throws Exception {
 
 
@@ -53,6 +59,13 @@ public class DataBase {
         return tables;
     }
 
+    /**
+     * 根据关键词，获取符合要求的表
+     * @param databaseConnectionInfo
+     * @param text
+     * @return
+     * @throws Exception
+     */
     public List<Table> getTablesByText(DatabaseConnectionInfo databaseConnectionInfo, String text) throws Exception {
 
         String key = databaseConnectionInfo.getId();
@@ -74,6 +87,13 @@ public class DataBase {
         return tables;
     }
 
+    /**
+     * 获取当下数据源中，特定表中的所有字段
+     * @param databaseConnectionInfo
+     * @param tablename
+     * @return
+     * @throws Exception
+     */
     public List<Column> getColumns(DatabaseConnectionInfo databaseConnectionInfo, String tablename) throws Exception {
         String key = databaseConnectionInfo.getId();
         logger.info("从数据源: '"+ key +"' ，表：'"+ tablename +"' 中查询“字段”; ");
