@@ -13,31 +13,11 @@ import java.io.IOException;
 @SpringBootTest
 public class DataDictionaryApplicationTests {
 
-    @Autowired
-    StoreFile storeFile;
 
     @Test
     public void contextLoads() throws IOException {
 
-        //storeFile.saveToFile("123456");
-
     }
-    @Test
-    public void contextLoads2() throws IOException {
 
-        //int s = storeFile.getNumber();
-        //System.out.println(s);
-
-    }
-    @Test
-    public void contextLoads3() throws IOException {
-
-        //storeFile.replaceLine(2,"99");
-    }
-    @Test
-    public void contextLoads4() throws IOException {
-
-       // storeFile.deleteLine(2);
-    }
 
 }
