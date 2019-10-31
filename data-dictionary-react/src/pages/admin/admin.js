@@ -7,7 +7,6 @@ import storageUtils from '../../utils/storageUtils.js';
 import { Redirect } from 'react-router-dom';
 import logo from '../../components/img/logo.png';
 import Highlighter from 'react-highlight-words';
-import { getcolumnsdata, gettablesdata } from '../../components/simulateddata/simulateddata.js';
 import InfiniteScroll from 'react-infinite-scroller';
 import { reqGetTables, reqGetColumns, reqGetTablesBytext } from '../../service/api/api.js';
 const { Search } = Input;
@@ -31,26 +30,7 @@ export default class Admin extends Component {
     }
 
 
-
-    // componentDidMount() {
-    //     var currentDB = memoryUtils.currentDB;//渲染界面后，从内存获取当下数据源信息
-    //     // if(currentDB !== "-1"){//若存在数据源，加载数据
-    //     //     this.setState({
-    //     //         tablesloading: true
-    //     //     });
-    //     //     this.loadTables(currentDB);
-    //     // }
-    //     if (currentDB === "-1") {//若不存在数据源，加载虚拟数据
-    //         const columnsdata = getcolumnsdata();
-    //         const tablesdata = gettablesdata();
-    //         this.setState({
-    //             columnsdata: columnsdata,
-    //             tablesdata: tablesdata,
-    //             currentDB: currentDB
-    //         });
-    //     }
-    // }
-
+    //当删除完最后一个数据源时，对整个Admin组件进行初始化
     empty = () => {
         this.setState({
             columnSearchText: '',//列搜索关键词
@@ -76,7 +56,7 @@ export default class Admin extends Component {
         });
         const tablesdata = await reqGetTables(currentDB);
         if (tablesdata.length === 0) {
-            message.warn("在当下数据源中一张表都没找到！ㄟ( ▔, ▔ )ㄏ");
+            message.warn("在当下数据源中一张表都没找到！ㄟ( ▔, ▔ )ㄏ", 10);
         }
         this.setState({
             tablesdata: tablesdata,
@@ -85,10 +65,10 @@ export default class Admin extends Component {
         });
     }
 
-    //从指定数据源加载字段
+    //从指定数据源的指定表加载字段
     loadColumns = async (currentDB, tablename) => {
         if (currentDB === "-1" || !tablename) {
-            message.warn("数据源或表名未指定！ (+_+)? ");
+            message.warn("数据源或表名未指定！ (+_+)? ", 10);
             return
         }
         //若缓存中存在该数据源中的该表字段信息，则直接使用，不再请求后台。
@@ -109,7 +89,7 @@ export default class Admin extends Component {
                 columnsloading: false
             });
         } else {
-            message.info("没有找到该表的字段信息！ ㄟ( ▔, ▔ )ㄏ");
+            message.warn("没有找到该表的字段信息！ ㄟ( ▔, ▔ )ㄏ", 10);
         }
     }
 
@@ -192,35 +172,6 @@ export default class Admin extends Component {
 
     }
 
-
-    // fetchData = async callback => {
-    //     const data = await reqGetTables();
-    //     //
-    // };
-
-    // //
-    // handleInfiniteOnLoad = () => {
-    //     let { tablesdata } = this.state;
-    //     this.setState({
-    //         tablesloading: true,
-    //     });
-    //     // if (tablesdata.length > 14) {
-    //     //     message.warning('Infinite List loaded all');
-    //     //     this.setState({
-    //     //         tableshasMore: false,
-    //     //         tablesloading: false,
-    //     //     });
-    //     //     return;
-    //     // }
-    //     this.fetchData(res => {
-    //         tablesdata = tablesdata.concat(res.results);
-    //         this.setState({
-    //             tablesdata,
-    //             tablesloading: false,
-    //         });
-    //     });
-    // };
-
     //切换左侧栏收起或展开状态
     collapsed = () => {
         this.setState({
@@ -232,7 +183,7 @@ export default class Admin extends Component {
     //选中左侧列表时，右侧显示该选中项的详细内容
     detail = (tablecode, tablename) => {
         if (!this.state.collapsed) {
-            this.loadColumns(memoryUtils.currentDB, tablecode);
+            this.loadColumns(this.state.currentDB, tablecode);
             this.setState({
                 tablename: tablename,
                 tablecode: tablecode
@@ -251,26 +202,27 @@ export default class Admin extends Component {
     search = async (value) => {
         this.onSearchText();
         var currentDB = !this.state.currentDB ? memoryUtils.currentDB : this.state.currentDB;
-        if (currentDB === "-1") {
+        if (currentDB === "-1") {//没有数据源
+            message.warn("请先添加数据源哦，亲", 10);
             return
         }
-        if (!value || value === '') {
+        if (!value || value === '') {//关键词为空时，查询所有内容
             this.loadTables(currentDB);
             return
         }
         this.setState({
             tablesloading: true
         });
-        const tablesdata = await reqGetTablesBytext(currentDB, value);
-        if (tablesdata.length > 0) {
+        const tablesdata = await reqGetTablesBytext(currentDB, value);//根据关键词查找
+        if (tablesdata.length > 0) {//若找到数据就刷新左侧列表
             this.setState({
                 tablesdata: tablesdata,
                 tablesloading: false,
                 tableSearchText: value,
                 columnSearchText: value
             });
-        } else {
-            message.info("没有查询到你要找的内容 ╮（╯＿╰）╭", 5);
+        } else {//没有找到内容，则消息提示
+            message.warn("没有查询到你要找的内容 ╮（╯＿╰）╭", 10);
             this.setState({
                 tablesloading: false
             });
@@ -278,15 +230,12 @@ export default class Admin extends Component {
     }
     //搜索框中内容改变时，实时改变关键词内容，并将其高亮。
     onSearchTextChange = (e) => {
-        console.log();
+        //console.log();
         this.setState({
             tableSearchText: e.target.value,
             columnSearchText: e.target.value
         });
     }
-    handleInfiniteOnLoad = () => {
-
-    };
 
     render() {
         const columns = [
@@ -324,7 +273,7 @@ export default class Admin extends Component {
         ];
         //内存中获取登陆状态，1：表示已经登陆，0：表示未登陆
         const loginStatus = memoryUtils.loginStatus;
-        if (loginStatus === 0) {
+        if (loginStatus === 0) {//若没有登录，则转到登录界面进行登录
             return <Redirect to="/login"></Redirect>
         }
         const { collapsed } = this.state;
@@ -371,7 +320,7 @@ export default class Admin extends Component {
                                 initialLoad={false}
                                 pageStart={0}
                                 useWindow={false}
-                                loadMore={this.handleInfiniteOnLoad}
+                                loadMore={() => { }}
                             >
                                 <List
                                     size="small"

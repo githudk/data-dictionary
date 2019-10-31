@@ -31,13 +31,21 @@ class DBlist extends Component {
         var currentDB = memoryUtils.currentDB;
         //console.log(currentDB);
         if (DBlist.length > 0) {//如果请求到数据
-            memoryUtils.currentDBlist = DBlist;
-            if (currentDB === "-1") {//如果本地没有缓存上次的记录
+            var t = false;
+            for(var i=0;i<DBlist.length;i++){//遍历数据源，判断缓存中的旧记录（数据源）是否属于当下的数据源列表
+                if(currentDB === DBlist[0].id){
+                    t = true;
+                    break;
+                }
+            }
+            if (!t) {//如果本地缓存无效
                 currentDB = DBlist[0].id;//将请求到的第一条数据作为当下选中的连接数据
-                storageUtils.setCurrentDB(DBlist[0].id);//保存到本地缓存中
             }
             const { loadTables } = this.props;
             loadTables(currentDB);
+            storageUtils.setCurrentDB(currentDB);
+            memoryUtils.currentDBlist = DBlist;
+            memoryUtils.currentDB = currentDB;
         } else {//若没有请求到数据（还没有添加过数据）
             storageUtils.setCurrentDB("-1");//将缓存标志设置成初始状态
             memoryUtils.currentDB = "-1";//将临时记忆设置成初始状态
@@ -106,7 +114,15 @@ class DBlist extends Component {
 
     //退出新增
     handleCancel = () => {
-        this.setState({ visible: false });
+        //若返回出错信息，或者正常消息返回，则允许退出新增
+        if (memoryUtils.error || !this.state.loading) {
+            memoryUtils.error = false;//使用完错误状态信息，需要重置为false
+            this.setState({
+                visible: false,
+                loading: false
+            });
+        }
+
     };
 
     //提交数据到后台新增保存
@@ -115,12 +131,12 @@ class DBlist extends Component {
         //数据校验
         this.props.form.validateFieldsAndScroll(async (err, values) => {
             if (!err) {//如果校验通过，执行提交保存
-                message.info("开始测试数据源连接，并保存...");
+                message.info("开始测试数据源连接，并保存...",10);
                 const result = await reqSaveDB(values);//请求后台进行保存
                 //console.log(result);
                 if (result.status === 1) {//保存成功
                     //message.destroy();
-                    message.success(result.msg);//界面提示成功消息
+                    message.success(result.msg,10);//界面提示成功消息
                     storageUtils.setCurrentDB(result.data.id);//将新增的链接设置为当下选中的链接，保存到缓存中
                     memoryUtils.currentDB = result.data.id;//将新增的链接设置为当下选中的链接，保存到内存中
                     memoryUtils.currentDBlist = [...this.state.DBlist, result.data];
@@ -134,7 +150,7 @@ class DBlist extends Component {
                     });
 
                 } else {//保存失败
-                    message.error(result.msg);//提示失败信息
+                    message.warn(result.msg,10);//提示失败信息
                     this.setState({ loading: false });
                 }
             } else {//校验字段有误
@@ -175,9 +191,15 @@ class DBlist extends Component {
 
     //退出编辑
     handleEditCancel = () => {
-        this.setState({
-            editvisible: false
-        });
+        //若返回出错信息，或者正常消息返回，则允许退出新增
+        if (memoryUtils.error || (!this.state.editloading && !this.state.deleteloading)) {
+            memoryUtils.error = false;//使用完错误状态信息，需要重置为false
+            this.setState({
+                editvisible: false,
+                editloading: false,
+                deleteloading: false
+            });
+        }
     };
 
     //待编辑数据源列表变更触发的事件
@@ -189,7 +211,7 @@ class DBlist extends Component {
         //加载表格数据
         //......todo
     };
-
+    //填充表单
     filldata = (currentDB) => {
         var form = this.props.form;
         var { DBlist } = this.state;
@@ -209,17 +231,18 @@ class DBlist extends Component {
     }
 
 
+    //编辑提交
     handleEditSubmit = (e) => {
         e.preventDefault();
         //数据校验
         this.props.form.validateFieldsAndScroll(async (err, values) => {
             if (!err) {//如果校验通过，执行提交保存
-                message.info("开始测试数据源连接，并保存...");
+                message.info("开始测试数据源连接，并保存...",10);
                 const result = await reqSaveDB(values);//请求后台进行保存
                 //console.log(result);
                 if (result.status === 1) {//保存成功
                     //message.destroy();
-                    message.success(result.msg);//界面提示成功消息
+                    message.success(result.msg,10);//界面提示成功消息
                     //storageUtils.setCurrentDB(result.data.id);//将新增的链接设置为当下选中的链接，保存到缓存中
                     //memoryUtils.currentDB = result.data.id;//将新增的链接设置为当下选中的链接，保存到内存中
                     var { DBlist } = this.state;
@@ -241,7 +264,7 @@ class DBlist extends Component {
                     });
 
                 } else {//保存失败
-                    message.error(result.msg);//提示失败信息
+                    message.warn(result.msg,10);//提示失败信息
                     this.setState({ editloading: false });
                 }
             } else {//校验字段有误
@@ -265,7 +288,7 @@ class DBlist extends Component {
         var { editcurrentDB, currentDB } = this.state;
         const result = await reqDeleteDB(editcurrentDB);//请求后台进行保存
         if (result.status === 1) {
-            message.success(result.msg);
+            message.success(result.msg,10);
             var { DBlist } = this.state;
             var index = -1;
             for (var i = 0; i < DBlist.length; i++) {
@@ -280,7 +303,7 @@ class DBlist extends Component {
 
             console.log(DBlist);
             memoryUtils.currentDBlist = DBlist;
-            if(!DBlist || DBlist.length === 0){//当最后一个数据源被删除后，清空并初始化整个应用
+            if (!DBlist || DBlist.length === 0) {//当最后一个数据源被删除后，清空并初始化整个应用
                 storageUtils.setCurrentDB("-1");//将缓存标志设置成初始状态
                 memoryUtils.currentDB = "-1";//将临时记忆设置成初始状态
                 var { empty } = this.props;
@@ -293,7 +316,7 @@ class DBlist extends Component {
                     editcurrentDB: ''
                 });
 
-            }else if (editcurrentDB === currentDB) {//当被删除的数据源正好是目前正在用的数据源时，触发数据源变更。
+            } else if (editcurrentDB === currentDB) {//当被删除的数据源正好是目前正在用的数据源时，触发数据源变更。
                 storageUtils.setCurrentDB(DBlist[0].id);//更新状态
                 memoryUtils.currentDB = DBlist[0].id;//更新状态
                 this.setState({//渲染界面
@@ -316,7 +339,7 @@ class DBlist extends Component {
             }
 
         } else {
-            message.success(result.msg);
+            message.warn(result.msg,10);
             this.setState({ deleteloading: false });
         }
     }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
-
+import memoryUtils from '../../utils/memoryUtils.js'
 
 export default function ajax(url, data = {}, type = "get") {
 
@@ -14,8 +14,9 @@ export default function ajax(url, data = {}, type = "get") {
         promise.then(response => {
             resolve(response.data)
         }).catch((error) => {
+            memoryUtils.error = true;
             console.log(error.message);
-            message.error("真不巧，出错了[＞﹏＜]");
+            message.error("真不巧，出错了[＞﹏＜]",10);
         })
     });
 

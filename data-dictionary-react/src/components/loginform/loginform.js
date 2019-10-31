@@ -24,12 +24,12 @@ class LoginForm extends Component {
       if (!err) {
         const data = await reqLogin(username, password);
         if(data.status === 1){
-          message.success(data.msg);
+          message.success(data.msg,10);
           memoryUtils.loginStatus = 1;//将登陆状态记录在内存
           storageUtils.loginSuccess();//将登陆状态持久化到浏览器缓存中
           history.replace("/");//跳转到应用界面
         }else if(data.status === 0){//登陆失败
-          message.error(data.msg);
+          message.error(data.msg,10);
         }
       }
     });

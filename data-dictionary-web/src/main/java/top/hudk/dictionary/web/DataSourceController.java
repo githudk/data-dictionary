@@ -52,7 +52,7 @@ public class DataSourceController {
             result.setData(databaseConnectionInfo);
         }else{
             logger.info("保存失败：无法访问数据库");
-            result = new Result(0, "保存失败：无法访问数据库,请检查数据源信息是否正确，然后重试！");
+            result = new Result(0, "保存失败，无法访问数据库");
         }
         logger.info(">>>>>>>>>>>>>>请求处理结束;");
 
