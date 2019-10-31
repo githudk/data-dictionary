@@ -52,7 +52,7 @@ public class LoginController {
 
     @RequestMapping("/")
     public void goAdmin(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        response.sendRedirect(request.getContextPath()+"/login");
+        response.sendRedirect(request.getContextPath()+"/login/index.html");
     }
 
 
