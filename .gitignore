@@ -1,67 +1,13 @@
-# Compiled class file
-*.class
+#被忽略的文件列表
+/*
 
-# Log file
-*.log
+#被管理的文件
+!README.md
+!/data-dictionary-react/public/
+!/data-dictionary-react/src/
+!/data-dictionary-react/config-overrides.js
+!/data-dictionary-react/package.json
+!/data-dictionary-react/yarn.lock
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-######################
-# Intellij
-######################
-.idea/
-*.iml
-*.iws
-*.ipr
-*.ids
-*.orig
-classes/
-.ideaDataSources/
-dataSources/
-overlays/
-
-######################
-# Maven
-######################
-/log/
-/target/
-**/target/
-######################
-# Eclipse
-######################
-*.pydevproject
-.project
-.metadata
-tmp/
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.classpath
-.settings/
-.loadpath
-.factorypath
-/src/main/resources/rebel.xml
-
-occ-portal-static/src/wbalone/META-INF/maven/
-.flattened-pom.xml
-*.dic
-*.gz
-*.dblist
+!/data-dictionary-web/src/
+!/data-dictionary-web/pom.xml
