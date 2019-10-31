@@ -9,5 +9,5 @@
 !/data-dictionary-react/package.json
 !/data-dictionary-react/yarn.lock
 
-!/data-dictionary-web/src/
+!/data-dictionary-web/src/main/
 !/data-dictionary-web/pom.xml
